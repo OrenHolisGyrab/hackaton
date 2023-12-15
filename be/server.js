@@ -40,6 +40,16 @@ app.all_json('/api/*', async req => {
 app.use('/api', lending.app);
 
 app.all_json('/api/*', async req => {
+	if (!hasAtLeastRole(req.session, 'WORKER')) {
+		throw new ApiError(401, 'Your role is too low to perform this operation');
+	}
+
+	return FallThrough;
+})
+
+app.use('/api', items.app);
+
+app.all_json('/api/*', async req => {
 	if (!hasAtLeastRole(req.session, 'ADMIN')) {
 		throw new ApiError(401, 'Your role is too low to perform this operation');
 	}
@@ -48,7 +58,6 @@ app.all_json('/api/*', async req => {
 })
 
 app.use('/api', users.app);
-app.use('/api', items.app);
 
 const options = {
 	lastModified: true,

@@ -28,7 +28,7 @@
       </CSidebarBrand>
       <CCloseButton class="d-lg-none" dark @click="$store.commit('toggleSidebar')" />
     </CSidebarHeader>
-    <AppSidebarNav />
+    <AppSidebarNav :session="session"/>
     <CSidebarFooter class="border-top">
       <CSidebarToggler
         class="d-none d-lg-flex"
@@ -56,6 +56,7 @@ export default {
       sygnet,
       sidebarUnfoldable: computed(() => store.state.sidebarUnfoldable),
       sidebarVisible: computed(() => store.state.sidebarVisible),
+      session: computed(() => store.state.session)
     }
   },
 }

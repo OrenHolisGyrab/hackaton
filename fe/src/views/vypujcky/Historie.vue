@@ -15,7 +15,7 @@
             <br>
             <CRow>
               <CCol>
-                <VypujckyTable :mode="'historic'" :actions="{
+                <VypujckyTable :mode="'/historic'" :actions="{
                   detail: true,
                   return: false,
                   longer: false,

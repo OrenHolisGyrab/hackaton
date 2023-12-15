@@ -1,4 +1,4 @@
-import { defineComponent, h, onMounted, ref, resolveComponent } from 'vue'
+import {computed, defineComponent, h, onMounted, ref, resolveComponent} from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 import {
@@ -9,6 +9,7 @@ import {
   CNavTitle,
 } from '@coreui/vue'
 import nav from '@/_nav.js'
+import {useStore} from "vuex";
 
 const normalizePath = (path) =>
   decodeURI(path)
@@ -42,6 +43,16 @@ const isActiveItem = (route, item) => {
   return false
 }
 
+const hasAtLeastRole = (sessionRole, role) => {
+  const roles = {
+    'ADMIN': 2,
+    'WORKER': 1,
+    'STUDENT': 0
+  }
+
+  return roles[sessionRole] >= roles[role];
+}
+
 const AppSidebarNav = defineComponent({
   name: 'AppSidebarNav',
   components: {
@@ -49,7 +60,9 @@ const AppSidebarNav = defineComponent({
     CNavGroup,
     CNavTitle,
   },
-  setup() {
+  props: ['session'],
+  setup(context) {
+    const store = useStore();
     const route = useRoute()
     const firstRender = ref(true)
 
@@ -134,12 +147,17 @@ const AppSidebarNav = defineComponent({
           )
     }
 
+    //const session = computed(() => store.state.session)?.role || 'STUDENT';
+
+    console.log(context.session);
     return () =>
       h(
         CSidebarNav,
         {},
         {
-          default: () => nav.map((item) => renderItem(item)),
+          default: () => nav
+            .filter(i => hasAtLeastRole(context.session.role, i.role))
+            .map((item) => renderItem(item)),
         },
       )
   },
