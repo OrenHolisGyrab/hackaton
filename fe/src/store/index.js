@@ -149,7 +149,7 @@ export default createStore({
 
     async getBorrowings(context, mode) {
       try {
-        const response = await REST.GET(`lending/${mode}`);
+        const response = await REST.GET(`lending${mode}`);
         context.commit('setBorrowings', response);
       } catch (error) {
         context.commit('setBorrowingsError', error);

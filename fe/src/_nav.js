@@ -1,13 +1,15 @@
 export default [
   {
     component: 'CNavItem',
-    name: 'Dashboard',
-    to: '/dashboard',
-    icon: 'cil-speedometer',
-    badge: {
-      color: 'primary',
-      text: 'NEW',
-    },
+    name: 'Moje výpůjčky',
+    to: '/vypujcky/personal-active',
+    icon: 'cil-apps',
+  },
+  {
+    component: 'CNavItem',
+    name: 'Předchozí výpůjčky',
+    to: '/vypujcky/personal-historic',
+    icon: 'cil-apps',
   },
   {
     component: 'CNavTitle',

@@ -18,15 +18,8 @@ const lendingListQuery = () => db.select()
 	);
 
 // Personal
-app.get_json('/lending', async req => {
-	const query = lendingListQuery().where('"user" = ?', req.session.id);
-
-	if (req.query.mode === 'active') {
-		return query.where('returned IS NULL').getList();
-	}
-
-	return query.where('returned IS NOT NULL').getList();
-});
+app.get_json('/lending/personal/active', async req => await lendingListQuery().where('"user" = ?', req.session.id).where('returned IS NULL').getList());
+app.get_json('/lending/personal/historic', async req => await lendingListQuery().where('"user" = ?', req.session.id).where('returned IS NOT NULL').getList());
 
 // administration
 

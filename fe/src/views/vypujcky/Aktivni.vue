@@ -20,7 +20,7 @@
             <br>
             <CRow>
               <CCol>
-                <VypujckyTable :mode="'active'" :actions="{
+                <VypujckyTable :mode="'/active'" :actions="{
                   detail: true,
                   return: true,
                   longer: true,
@@ -86,7 +86,7 @@ export default {
       loadItems()
     }
 
-   
+
     const novaVypujcka = reactive({});
 
     const save = async () => {

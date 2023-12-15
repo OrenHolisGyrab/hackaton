@@ -17,7 +17,7 @@
       <CTableBody>
         <CTableRow v-for="item in items" :key="item.code">
           <CTableDataCell class="text-center"> {{ item.item_code }} </CTableDataCell>
-          <CTableDataCell>
+          <CTableDataCell v-if="item.first_name">
             <div>{{ item.first_name }} {{ item.last_name }} ({{ item.email }})</div>
           </CTableDataCell>
           <CTableDataCell class="text-center"> {{ item.from }} </CTableDataCell>
@@ -110,7 +110,7 @@ export default {
     const store = useStore();
     let actions = true;
 
-    const downloadItems = async () => await store.dispatch('getBorrowings', context.mode);
+    const downloadItems = async () => await store.dispatch('getBorrowings', context.mode || '');
     downloadItems();
 
     const returnBorrowing = id => store.dispatch('returnBorrowing', id);
