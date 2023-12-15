@@ -189,7 +189,7 @@ export default createStore({
     },
     async updateUserRole(context, {id, role}) {
       try {
-        const response = await REST.POST(`users/${id}`, {role});
+        const response = await REST.POST(`users/${id}/role`, {role});
         context.commit('setUserRole', response);
       } catch (error) {
         context.commit('setUsersError', error);

@@ -21,9 +21,9 @@
             <CDropdown color="secondary" variant="btn-group">
               <CDropdownToggle color="primary">{{ item.role }}</CDropdownToggle>
               <CDropdownMenu>
-                <CDropdownItem @click="setRole(item.id, 0)"  href="#">Studen</CDropdownItem>
-                <CDropdownItem @click="setRole(item.id, 1)"  href="#">Pracovník</CDropdownItem>
-                <CDropdownItem @click="setRole(item.id, 2)"  href="#">Admin</CDropdownItem>
+                <CDropdownItem @click="setRole({id: item.id, role: 'STUDENT'})"  href="#">Student</CDropdownItem>
+                <CDropdownItem @click="setRole({id: item.id, role: 'WORKER'})"  href="#">Pracovník</CDropdownItem>
+                <CDropdownItem @click="setRole({id: item.id, role: 'ADMIN'})"  href="#">Admin</CDropdownItem>
               </CDropdownMenu>
             </CDropdown>
 
@@ -67,8 +67,10 @@ export default {
     }
 
     const disableUser = async (id, active) => await store.dispatch('disableUser', { id, active });
+    const setRole = data => store.dispatch('updateUserRole', data);
 
     return {
+      setRole,
       edit, deleteConfirm, disableUser,
       items: computed(() => store.state.users.users),
     }

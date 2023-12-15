@@ -87,10 +87,10 @@ const UserRole = {
 	properties: {
 		role: {
 			type: 'string',
-			enum: ['USER', 'WORKER', 'ADMIN']
+			enum: ['STUDENT', 'WORKER', 'ADMIN']
 		}
 	},
-	required: ['roles'],
+	required: ['role'],
 	additionalProperties: false
 }
 
