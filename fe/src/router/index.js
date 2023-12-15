@@ -59,7 +59,7 @@ const routes = [
           {
             path: 'opravneni',
             name: 'Opravnenia role',
-            component: () => import('@/views/uzivatele/Opravneni.vue'),
+            component: () => import('@/views/uzivatele/Users.vue'),
           },
         ]
       },

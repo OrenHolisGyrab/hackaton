@@ -18,6 +18,11 @@ export default createStore({
     borrowings: {
       list: [],
       error: null
+    },
+
+    users: {
+      users: [],
+      error: null
     }
   },
   mutations: {
@@ -73,6 +78,21 @@ export default createStore({
     },
     setSessionError(state, data) {
       state.error = data;
+    },
+
+    setUsersError(state, data) {
+      state.users.error = data;
+    },
+    setUsers(state, data) {
+      state.users.users = data;
+    },
+    setUserRole(state, data) {
+      const idx = state.users.users.findIndex(b => b.id === data.id);
+      state.users.users[idx].role = data.role;
+    },
+    disableUser(state, data) {
+      const idx = state.users.users.findIndex(b => b.id === data.id);
+      state.users.users[idx].active = data.active;
     },
   },
   actions: {
@@ -156,6 +176,31 @@ export default createStore({
         context.commit('returnBorrowing', response);
       } catch (error) {
         context.commit('setBorrowingsError', error);
+      }
+    },
+
+    async getUsers(context) {
+      try {
+        const response = await REST.GET(`users/list`);
+        context.commit('setUsers', response);
+      } catch (error) {
+        context.commit('setUsersError', error);
+      }
+    },
+    async updateUserRole(context, {id, role}) {
+      try {
+        const response = await REST.POST(`users/${id}`, {role});
+        context.commit('setUserRole', response);
+      } catch (error) {
+        context.commit('setUsersError', error);
+      }
+    },
+    async disableUser(context, {id, active}) {
+      try {
+        const response = await REST.POST(`users/${id}/activate`, {active});
+        context.commit('disableUser', response);
+      } catch (error) {
+        context.commit('setUsersError', error);
       }
     },
   },

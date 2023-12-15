@@ -83,8 +83,19 @@ const ItemBorrowingUpdate = {
 	additionalProperties: false
 }
 
+const UserRole = {
+	$id: 'UserRole',
+	type: 'object',
+	properties: {
+		role: {
+			type: 'string',
+			enum: ['USER', 'WORKER', 'ADMIN']
+		}
+	},
+	required: ['roles'],
+	additionalProperties: false
+}
+
 module.exports = {
-	Item: ajv.compile(Item),
-	ItemBorrowingUpdate: ajv.compile(ItemBorrowingUpdate),
-	ItemBorrowing: ajv.compile(ItemBorrowing)
+	UserRole: ajv.compile(UserRole)
 }
