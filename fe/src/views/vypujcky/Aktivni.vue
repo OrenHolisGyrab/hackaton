@@ -38,7 +38,7 @@
     <CModalHeader>
       <CModalTitle>Přidat položku</CModalTitle>
     </CModalHeader>
-    <CForm onsubmit="save">
+    <CForm :onsubmit="save">
       <CModalBody>
         <CFormInput v-model="novaVypujcka.item_code" list="datalistOptions" type="search" label="Kód položky" placeholder="vyhledat" text="todo: skenovat" required />
         <datalist id="datalistOptions">
@@ -54,15 +54,15 @@
 
         <CFormInput v-model="novaVypujcka.from" type="date" label="Datum vypůjčení" required />
         <CFormInput v-model="novaVypujcka.to" type="date" label="Datum navrácení" required />
-        <CFormTextarea v-model="novaVypujcka.note" label="Poznámka" rows="3" required></CFormTextarea>
+        <CFormTextarea v-model="novaVypujcka.note" label="Poznámka" rows="3"></CFormTextarea>
       </CModalBody>
+      <CModalFooter>
+        <CButton color="secondary" @click="() => { vypujcitModal = false }">
+          Storno
+        </CButton>
+        <CButton color="primary" type="submit">Uložit</CButton>
+      </CModalFooter>
     </CForm>
-    <CModalFooter>
-      <CButton color="secondary" @click="() => { vypujcitModal = false }">
-        Storno
-      </CButton>
-      <CButton color="primary" type="submit">Uložit</CButton>
-    </CModalFooter>
   </CModal>
 </template>
 <style>
