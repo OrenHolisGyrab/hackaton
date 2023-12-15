@@ -40,7 +40,8 @@ export default createStore({
       state.data.items.updateByIndex(data, i => i.id === data.id);
     },
     deleteItem(state, data) {
-      state.data.items.deleteByIndex(data, i => i.id === data.id);
+      const idx = state.items.items.findIndex(i => i.id === data);
+      state.items.items.splice(idx, 1);
     },
     importItems(state, data) {
       state.data.items = state.data.items.concat(data);
@@ -111,7 +112,7 @@ export default createStore({
     async deleteItem(context, id) {
       try {
         const response = await REST.DELETE(`items/${id}`);
-        context.commit('deleteItem', response);
+        context.commit('deleteItem', id);
       } catch (error) {
         context.commit('setItemsError', error);
       }

@@ -25,8 +25,8 @@
           <CTableDataCell>
 
             <CButtonGroup role="group" aria-label="Basic outlined example">
-              <CButton v-if="item.btns.edit" color="primary" variant="outline" @click="() => edit(item.id)">Upravit</CButton>
-              <CButton v-if="item.btns.delete" color="primary" variant="outline" @click="() => remove(item.id)">Smazat</CButton>
+              <CButton v-if="item.edit" color="primary" variant="outline" @click="() => edit(item.id)">Upravit</CButton>
+              <CButton v-if="item.delete" color="primary" variant="outline" @click="() => {deleteConfirm = item.id}">Smazat</CButton>
             </CButtonGroup>
 
           </CTableDataCell>
@@ -45,60 +45,44 @@
       <CButton color="secondary" @click="() => { deleteConfirm = false }">
         Ne
       </CButton>
-      <CButton color="danger">Smazat</CButton>
+      <CButton color="danger" @click="() => removeItem()">Smazat</CButton>
     </CModalFooter>
   </CModal>
 </template>
 
 <script>
-import { ref } from "vue";
-import { Formats } from "../../utils/utils";
+import {computed, ref} from "vue";
+import { useStore } from 'vuex';
+import {Formats} from "../../utils/utils";
+
 export default {
   name: 'PolozkyTable',
-  props: {
-    items: {
-      type: Array,
-      default: []
-    },
-    actions: {
-      type: Object,
-      default: {
-        edit: true,
-        delete: true,
-      }
-    }
-  },
   components: {
   },
-  setup(context) {
+  setup() {
+    const store = useStore();
 
-    let items = context.items;
-    console.log(items);
+    const downloadItems = async () => await store.dispatch('getItems');
+    downloadItems();
 
-
-
-
-    items = items.map(i => ({
-      ...i,
-
-      //buttons enabled
-      btns: {
-        ...context.actions
-      }
-    }))
-
-    const deleteConfirm = ref(false);
+    const deleteConfirm = ref(null);
     let edit = (id) => {
       console.log(id);
     }
-    let remove = (id) => {
-      deleteConfirm.value = true;
-      console.log(id);
+
+    const removeItem = async () => {
+      await store.dispatch('deleteItem', deleteConfirm.value);
+      deleteConfirm.value = null;
     }
 
-
     return {
-      items, edit, remove, deleteConfirm
+      edit, deleteConfirm, removeItem,
+      items: computed(() => store.state.items.items.map(i => ({
+        ...i,
+        added: Formats.date((new Date(i.added)).getTime() / 1000),
+        edit: true,
+        delete: true,
+      }))),
     }
   },
 }
