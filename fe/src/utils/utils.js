@@ -467,6 +467,73 @@ export const Utils = {
 	}
 }
 
+function prepFormat(valPrep, fmt, postProc = v => v) {
+  return v => {
+    if (v != null) {
+      v = valPrep(v);
+
+      return postProc(fmt.format(v));
+    }
+
+    return '';
+  };
+}
+
+export const Formats = ((lang) => ({
+  time: prepFormat(v => new Date(v * 1000), new Intl.DateTimeFormat(lang, {
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  })),
+
+  date: prepFormat(v => new Date(v * 1000), new Intl.DateTimeFormat(lang, {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric'
+  })),
+  date_utc: prepFormat(v => new Date(v * 1000), new Intl.DateTimeFormat(lang, {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    timeZone: 'UTC'
+  })),
+  datetime: prepFormat(v => new Date(v * 1000), new Intl.DateTimeFormat(lang, {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric'
+  })),
+
+  date_weekday: prepFormat(v => new Date(v * 1000), new Intl.DateTimeFormat(lang, {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric'
+  })),
+
+  time_short: prepFormat(v => new Date(v * 1000), new Intl.DateTimeFormat(lang, {hour: '2-digit', minute: '2-digit'})),
+  time_short_utc: prepFormat(v => new Date(v * 1000), new Intl.DateTimeFormat(lang, {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'UTC'
+  })),
+  date_day_of_week: prepFormat(v => new Date(v * 1000), new Intl.DateTimeFormat(lang, {weekday: 'long'})),
+
+  date_or_datetime: v => {
+    if (v == null) {
+      return '';
+    }
+
+    let vd = new Date(v * 1000);
+    if (vd.getHours() == 0 && vd.getMinutes() == 0 && vd.getSeconds() == 0) {
+      return Formats.date(v);
+    } else {
+      return Formats.datetime(v);
+    }
+  },
+}))('cs-CZ')
+
 export let Uploads = {
 	uploadFile(path, file, {signal, progress, headers} = {}) {
 		return new Promise((res, rej) => {
