@@ -61,7 +61,7 @@ const ItemBorrowing = {
 			type: 'string'
 		}
 	},
-	required: ['email', 'item', 'note', 'to', 'from'],
+	required: ['email', 'item', 'to', 'from'],
 	additionalProperties: false
 }
 

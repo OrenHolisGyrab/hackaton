@@ -67,7 +67,7 @@ const options = {
 app.use(express.static(path.join(path.resolve(), 'gen/fe'), options))
 app.use(express.static(path.join(path.resolve(), 'fe'), options));
 
-app.get('*', (req, res) => {
+/*app.get('*', (req, res) => {
 	res.set('Content-Type', 'text/html;charset=utf-8');
 	res.set('Cache-Control', 'private, must-revalidate, max-age=60');
 	res.send(`<!DOCTYPE html>
@@ -82,4 +82,6 @@ app.get('*', (req, res) => {
 	</head>
 	<body></body>
 `);
-});
+});*/
+
+app.get('*', express.static('./dist'));
