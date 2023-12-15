@@ -12,8 +12,8 @@
                 <div class="small text-body-secondary">January 2021</div>
               </CCol>
               <CCol :sm="7" class="d-none d-md-block">
-                <CButton color="primary" class="float-end">
-                  <CIcon icon="cil-cloud-download" />
+                <CButton color="primary" class="float-end" size="lg" @click="pujcit()">
+                  Vypůjčit
                 </CButton>
               </CCol>
             </CRow>
@@ -33,6 +33,38 @@
     </CRow>
 
   </div>
+
+  <CModal :visible="vypujcitModal" @close="() => { vypujcitModal = false }">
+    <CModalHeader>
+      <CModalTitle>Přidat položku</CModalTitle>
+    </CModalHeader>
+    <CModalBody>
+      item_code: 'DHM-2002',
+      first_name: 'Mark',
+      last_name: " Nopeeee",
+      email: 'mmm@asd.cz',
+      from: '3.3.2000',
+      to: '3.5.5000',
+      item_name: 'Name',
+      note: 'Poznamkskkaksk',
+      prolonged: true,
+
+      <CForm>
+        <CFormInput type="text" label="Kód položky" placeholder="codeplaceholder" text="todo: skenovat" />
+        <CFormInput type="email" label="Student" placeholder="email studenta" />
+
+        <CFormInput type="date" label="Datum vypůjčení" placeholder=""/>
+        <CFormInput type="date" label="Datum vypůjčení" placeholder=""/>
+      </CForm>
+
+    </CModalBody>
+    <CModalFooter>
+      <CButton color="secondary" @click="() => { vypujcitModal = false }">
+        Storno
+      </CButton>
+      <CButton color="primary">Uložit</CButton>
+    </CModalFooter>
+  </CModal>
 </template>
 
 <script>
@@ -61,8 +93,13 @@ export default {
         },
 
       ])
+
+    const vypujcitModal = ref(false);
+    const pujcit = () => {
+      vypujcitModal.value = true;
+    }
     return {
-      vypujcky
+      vypujcky, pujcit, vypujcitModal
     }
   },
 }
