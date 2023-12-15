@@ -20,14 +20,27 @@
 
   <CModal :visible="addItemModal" @close="() => { addItemModal = false }">
     <CModalHeader>
-      <CModalTitle>Opravdu smazat?</CModalTitle>
+      <CModalTitle>Přidat položku</CModalTitle>
     </CModalHeader>
-    <CModalBody>Pložka bude nenávratně odstranea!</CModalBody>
+    <CModalBody>
+
+
+      <CForm>
+        <CFormInput type="text" label="Kód položky" placeholder="codeplaceholder" />
+        <CFormInput type="text" label="Nazev položky" placeholder="např. Notebook, klávesnice ..." />
+        <CFormTextarea label="Popis" rows="3"></CFormTextarea>
+        <CFormInput type="text" label="Místnost" placeholder="codeplaceholder" />
+        <CFormInput type="text" label="Datum přidání" placeholder="codeplaceholder" />
+        <CFormInput type="text" label="Výrobní číslo" placeholder="codeplaceholder" />
+
+      </CForm>
+
+    </CModalBody>
     <CModalFooter>
       <CButton color="secondary" @click="() => { addItemModal = false }">
-        Ne
+        Storno
       </CButton>
-      <CButton color="danger">Smazat</CButton>
+      <CButton color="primary">Uložit</CButton>
     </CModalFooter>
   </CModal>
 </template>
