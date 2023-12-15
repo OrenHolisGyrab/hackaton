@@ -8,19 +8,8 @@ const routes = [
     path: '/',
     name: 'Home',
     component: DefaultLayout,
-    redirect: '/dashboard',
+    redirect: '/vypujcky/personal-active',
     children: [
-      {
-        path: '/dashboard',
-        name: 'Dashboard',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-          import(
-            /* webpackChunkName: "dashboard" */ '@/views/dashboard/Dashboard.vue'
-          ),
-      },
       {
         path: '/vypujcky',
         name: 'Vypujcky',
@@ -30,6 +19,16 @@ const routes = [
           },
         },
         children: [
+          {
+            path: 'personal-active',
+            name: 'Osobní aktivní',
+            component: () => import('@/views/vypujcky/Personal.vue'),
+          },
+          {
+            path: 'personal-historic',
+            name: 'Osobní historie',
+            component: () => import('@/views/vypujcky/PersonalHistoric.vue'),
+          },
           {
             path: 'aktivni',
             name: 'Aktivni',
