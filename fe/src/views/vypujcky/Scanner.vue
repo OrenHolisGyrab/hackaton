@@ -16,9 +16,9 @@ export default {
       const borrowed = await REST.GET(`lending/item/${context.code}/borrowed`);
 
       if (!borrowed.user) {
-        await router.push(`/vypujcky/aktivni/${borrowed.code}/create`);
+        await router.push(`/vypujcky/aktivni/create/${borrowed.code}`);
       } else {
-        await router.push(`/vypujcky/aktivni/${borrowed.id}/return`);
+        await router.push(`/vypujcky/aktivni/return/${borrowed.borrowing_id}`);
       }
     })();
 

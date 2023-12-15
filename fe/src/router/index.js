@@ -19,6 +19,7 @@ const routes = [
       {
         path: '/vypujcky',
         name: 'Vypujcky',
+        redirect: '/vypujcky/aktivni',
         component: {
           render() {
             return h(resolveComponent('router-view'))
@@ -38,7 +39,23 @@ const routes = [
           {
             path: 'aktivni',
             name: 'Aktivni',
-            component: () => import('@/views/vypujcky/Aktivni.vue'),
+            redirect: '/vypujcky/aktivni',
+            children: [
+              {
+                path: 'create/:code?',
+                name: 'Create',
+                component: () => import('@/views/vypujcky/Aktivni.vue'),
+              },
+              {
+                path: 'return/:id?',
+                name: 'Return',
+                component: () => import('@/views/vypujcky/Aktivni.vue'),
+              },
+              {
+                path: '/',
+                name: 'Create',
+                component: () => import('@/views/vypujcky/Aktivni.vue'),
+              }],
           },
           {
             path: 'historie',
