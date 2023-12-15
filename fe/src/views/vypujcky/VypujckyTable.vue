@@ -30,7 +30,8 @@
             <CButtonGroup role="group" aria-label="Basic outlined example">
               <CButton v-if="item.btns.detail" color="primary" variant="outline">Detail</CButton>
               <CButton v-if="item.btns.longer" color="primary" variant="outline">Prodloužit</CButton>
-              <CButton v-if="item.btns.return" color="primary" variant="outline">Vrátit</CButton>
+              <CButton v-if="item.btns.return" :disabled="!!item.returned" color="primary" variant="outline" @click="() => returnBorrowing(item.id)">
+                {{ item.returned ? 'Vráceno' : 'Vrátit' }}</CButton>
             </CButtonGroup>
 
           </CTableDataCell>
@@ -58,7 +59,10 @@ export default {
     const downloadItems = async () => await store.dispatch('getBorrowings', context.mode);
     downloadItems();
 
+    const returnBorrowing = id => store.dispatch('returnBorrowing', id);
+
     return {
+      returnBorrowing,
       actions,
       items: computed(() => store.state.borrowings.list.map(i => ({
         ...i,
