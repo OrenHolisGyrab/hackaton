@@ -55,7 +55,7 @@
       <CModalTitle>QR Kód</CModalTitle>
     </CModalHeader>
     <CModalBody>
-      <qrcode-vue :value="`${window.location.origin}/scan/${qrModal}`" />
+      <qrcode-vue :value="`${window.location.origin}/#/scan/${qrModal}`" />
     </CModalBody>
     <CModalFooter>
       <CButton color="Primary" @click="() => { qrModal = null }">
