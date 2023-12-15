@@ -7,6 +7,8 @@ export default createStore({
     sidebarVisible: '',
     sidebarUnfoldable: false,
     theme: 'light',
+    session: null,
+    error: null,
 
     items: {
       items: [],
@@ -64,8 +66,24 @@ export default createStore({
     setBorrowingsError(state, data) {
       state.borrowings.error = data;
     },
+
+    setSession(state, data) {
+      state.session = data;
+    },
+    setSessionError(state, data) {
+      state.error = data;
+    },
   },
   actions: {
+    async getSession(context) {
+      try {
+        const response = await REST.GET('sessions');
+        context.commit('setSession', response);
+      } catch (error) {
+        context.commit('setSessionError', error);
+      }
+    },
+
     async getItems(context) {
       try {
         const response = await REST.GET('items');
