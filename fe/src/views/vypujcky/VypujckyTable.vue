@@ -29,7 +29,13 @@
 
             <CButtonGroup role="group" aria-label="Basic outlined example">
               <CButton v-if="item.btns.detail" color="primary" variant="outline" @click="() => openDetail(item.item)">Detail</CButton>
-              <CButton v-if="item.btns.longer" color="primary" variant="outline" @click="() => prodlouzitModal = true">Prodloužit</CButton>
+              <CButton v-if="item.btns.longer" color="primary" variant="outline" @click="() => {
+                const [date, month, year] = item.to.split('. ');
+
+                prodlouzitModal = item.id;
+                prodlouzitData.note = item.note;
+                prodlouzitData.to = (new Date(`${year}-${month}-${date}`)).toISOString().substring(0,10);
+              }">Prodloužit</CButton>
               <CButton v-if="item.btns.return" :disabled="!!item.returned" color="primary" variant="outline" @click="() => returnBorrowing(item.id)">
                 {{ item.returned ? 'Vráceno' : 'Vrátit' }}</CButton>
             </CButtonGroup>
@@ -42,20 +48,20 @@
 
   </div>
 
-  <CModal :visible="prodlouzitModal" @close="() => { prodlouzitModal = false }">
+  <CModal :visible="prodlouzitModal" @close="() => { prodlouzitModal = null }">
     <CModalHeader>
       <CModalTitle>Prodloužit</CModalTitle>
     </CModalHeader>
     <CForm :onsubmit="prodlouzit">
       <CModalBody>
-        <CFormInput v-model="prodlouzit.to" type="date" label="Nové datum navrácení" required />
-        <CFormTextarea v-model="prodlouzit.note" label="Poznámka" rows="3"></CFormTextarea>
+        <CFormInput v-model="prodlouzitData.to" type="date" label="Nové datum navrácení" required />
+        <CFormTextarea v-model="prodlouzitData.note" label="Poznámka" rows="3"></CFormTextarea>
       </CModalBody>
       <CModalFooter>
-        <CButton color="secondary" @click="() => { prodlouzitModal = false }">
+        <CButton color="secondary" @click="() => { prodlouzitModal = null }">
           Storno
         </CButton>
-        <CButton color="primary" type="submit">Uložit</CButton>
+        <CButton color="primary" type="submit" @click="prodlouzit">Uložit</CButton>
       </CModalFooter>
     </CForm>
   </CModal>
@@ -111,11 +117,14 @@ export default {
 
     const detailModal = ref(null);
 
-    const prodlouzitModal = ref(false);
+    const prodlouzitModal = ref(null);
     const prodlouzitData = reactive({})
-    const prodlouzit = () => {
-      //todo odeslat na server
-      prodlouzitModal.value = false;
+    const prodlouzit = async () => {
+      await store.dispatch('prolongeBorrowing', {
+        id: prodlouzitModal.value,
+        data: {note: prodlouzitData.note, to: prodlouzitData.to}
+      })
+      prodlouzitModal.value = null;
 
     }
 

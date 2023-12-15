@@ -64,6 +64,7 @@ export default createStore({
     prolongeBorrowing(state, data) {
       const idx = state.borrowings.list.findIndex(b => b.id === data.id);
       state.borrowings.list[idx].to = data.to;
+      state.borrowings.list[idx].note = data.note;
     },
     returnBorrowing(state, data) {
       const idx = state.borrowings.list.findIndex(b => b.id === data.id);
@@ -164,7 +165,7 @@ export default createStore({
     },
     async prolongeBorrowing(context, {id, data}) {
       try {
-        const response = await REST.GET(`lending/${id}`, data);
+        const response = await REST.PUT(`lending/${id}`, data);
         context.commit('prolongeBorrowing', response);
       } catch (error) {
         context.commit('setBorrowingsError', error);

@@ -11,11 +11,6 @@
                 </h4>
                 <div class="small text-body-secondary">January 2021</div>
               </CCol>
-              <CCol :sm="7" class="d-none d-md-block">
-                <CButton color="primary" class="float-end">
-                  <CIcon icon="cil-cloud-download" />
-                </CButton>
-              </CCol>
             </CRow>
             <br>
             <CRow>

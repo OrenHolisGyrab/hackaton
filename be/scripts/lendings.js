@@ -84,10 +84,6 @@ app.post_json('/lending', async req => {
 
 	const user = await db.select('users').where('email = ?', data.email).oneOrNone();
 
-	/*if (user.role !== 'STUDENT') {
-		throw new BadRequest('Cannot lend item other user than student');
-	}*/
-
 	if (!user) {
 		throw new NotFound('User not found');
 	}
@@ -107,6 +103,10 @@ app.put_json('/lending/:id([0-9]+)', async req => {
 	const borrowing = await validateId(req.params.id, 'item_borrowings')
 	validateAjvScheme(ItemBorrowingUpdate, req.body);
 	const to = validateValidDate(req.body.to);
+
+	if (to < borrowing.to) {
+		throw new BadRequest('Cannot set date in past');
+	}
 
 	return await db.update('item_borrowings')
 		.set({to, note: req.body.note, prolonged: true})
