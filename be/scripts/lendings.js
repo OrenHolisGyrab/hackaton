@@ -57,6 +57,14 @@ app.get_json('/lending/item/:id([0-9]+)/borrowed', async req => {
 	return !!(await db.select('item_borrowings').where('item = ?', id).oneOrNone());
 });
 
+app.get_json('/lending/free/items', async req => await db.select()
+	.fields('items.*')
+	.from(
+		'items',
+		'LEFT JOIN item_borrowings ib ON ib.item = items.id AND ib.returned IS NULL'
+	).where('ib.id IS NULL').getList()
+);
+
 app.post_json('/lending', async req => {
 	const data = req.body;
 
