@@ -48,6 +48,8 @@
       <CButton color="danger" @click="() => removeItem()">Smazat</CButton>
     </CModalFooter>
   </CModal>
+
+
 </template>
 
 <script>
@@ -75,6 +77,7 @@ export default {
       deleteConfirm.value = null;
     }
 
+
     return {
       edit, deleteConfirm, removeItem,
       items: computed(() => store.state.items.items.map(i => ({
@@ -83,6 +86,7 @@ export default {
         edit: true,
         delete: true,
       }))),
+
     }
   },
 }

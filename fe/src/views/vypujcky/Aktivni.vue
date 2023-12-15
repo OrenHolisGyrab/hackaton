@@ -58,6 +58,8 @@
       </CModalFooter>
     </CForm>
   </CModal>
+
+
 </template>
 <style>
 label {
@@ -84,6 +86,7 @@ export default {
       loadItems()
     }
 
+   
     const novaVypujcka = reactive({});
 
     const save = async () => {

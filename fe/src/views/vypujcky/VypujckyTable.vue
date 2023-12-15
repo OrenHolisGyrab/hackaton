@@ -29,7 +29,7 @@
 
             <CButtonGroup role="group" aria-label="Basic outlined example">
               <CButton v-if="item.btns.detail" color="primary" variant="outline">Detail</CButton>
-              <CButton v-if="item.btns.longer" color="primary" variant="outline">Prodloužit</CButton>
+              <CButton v-if="item.btns.longer" color="primary" variant="outline" @click="() => prodlouzitModal = true">Prodloužit</CButton>
               <CButton v-if="item.btns.return" :disabled="!!item.returned" color="primary" variant="outline" @click="() => returnBorrowing(item.id)">
                 {{ item.returned ? 'Vráceno' : 'Vrátit' }}</CButton>
             </CButtonGroup>
@@ -41,12 +41,30 @@
     </CTable>
 
   </div>
+
+  <CModal :visible="prodlouzitModal" @close="() => { prodlouzitModal = false }">
+    <CModalHeader>
+      <CModalTitle>Prodloužit</CModalTitle>
+    </CModalHeader>
+    <CForm :onsubmit="prodlouzit">
+      <CModalBody>
+        <CFormInput v-model="prodlouzit.to" type="date" label="Nové datum navrácení" required />
+        <CFormTextarea v-model="prodlouzit.note" label="Poznámka" rows="3"></CFormTextarea>
+      </CModalBody>
+      <CModalFooter>
+        <CButton color="secondary" @click="() => { prodlouzitModal = false }">
+          Storno
+        </CButton>
+        <CButton color="primary" type="submit">Uložit</CButton>
+      </CModalFooter>
+    </CForm>
+  </CModal>
 </template>
 
 <script>
 import { Formats } from "../../utils/utils";
 import {useStore} from "vuex";
-import {computed} from "vue";
+import {computed, ref, reactive} from "vue";
 export default {
   name: 'Dashboard',
   components: {
@@ -61,6 +79,17 @@ export default {
 
     const returnBorrowing = id => store.dispatch('returnBorrowing', id);
 
+
+    
+
+    const prodlouzitModal = ref(false);
+    const prodlouzitData = reactive({})
+    const prodlouzit = () => {
+      //todo odeslat na server 
+      prodlouzitModal.value = false;
+
+    }
+
     return {
       returnBorrowing,
       actions,
@@ -72,6 +101,7 @@ export default {
         //buttons enabled
         btns: context.actions
       }))),
+      prodlouzit,prodlouzitData,prodlouzitModal
     }
   },
 }
