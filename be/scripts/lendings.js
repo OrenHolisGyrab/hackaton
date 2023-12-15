@@ -76,7 +76,7 @@ app.post_json('/lending', async req => {
 
 	await validateItemIsNotBorrowed(item.id);
 
-	return await db.insert('item_borrowings', {
+	const borrowing = await db.insert('item_borrowings', {
 		"user": user.id,
 		item: item.id,
 		"from": data.from,
@@ -84,6 +84,8 @@ app.post_json('/lending', async req => {
 		note: data.note,
 		confirmed: true,
 	}).oneOrNone();
+
+	return await lendingListQuery().whereId(borrowing.id).oneOrNone();
 });
 app.put_json('/lending/:id([0-9]+)', async req => {
 	const borrowing = await validateId(req.params.id, 'item_borrowings')
