@@ -6,7 +6,7 @@ import DefaultLayout from '@/layouts/DefaultLayout'
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'Domovská obrazovka',
     component: DefaultLayout,
     redirect: '/vypujcky/personal-active',
     children: [
@@ -18,7 +18,7 @@ const routes = [
       },
       {
         path: '/vypujcky',
-        name: 'Vypujcky',
+        name: 'Výpůjčky',
         redirect: '/vypujcky/aktivni',
         component: {
           render() {
@@ -38,7 +38,7 @@ const routes = [
           },
           {
             path: 'aktivni',
-            name: 'Aktivni',
+            name: 'Aktivní',
             component: () => import('@/views/vypujcky/Aktivni.vue'),
           },
           {
@@ -60,14 +60,14 @@ const routes = [
           },
           {
             path: 'polozky',
-            name: 'Polozky',
+            name: 'Položky',
             component: () => import('@/views/vypujcky/Polozky.vue'),
           },
         ]
       },
       {
         path: '/uzivatele',
-        name: 'Uzivatele',
+        name: 'Uživatele',
         component: {
           render() {
             return h(resolveComponent('router-view'))
@@ -76,7 +76,7 @@ const routes = [
         children: [
           {
             path: 'opravneni',
-            name: 'Opravnenia role',
+            name: 'Uživatelé',
             component: () => import('@/views/uzivatele/Users.vue'),
           },
         ]

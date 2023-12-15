@@ -46,7 +46,7 @@ export default [
   },
   {
     component: 'CNavItem',
-    name: 'Opravneni',
+    name: 'Uživatelé',
     to: '/uzivatele/opravneni',
     icon: 'cil-apps',
     role: 'ADMIN'
