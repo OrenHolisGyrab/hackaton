@@ -36,7 +36,7 @@
 
   <CModal :visible="vypujcitModal" @close="() => { vypujcitModal = false }">
     <CModalHeader>
-      <CModalTitle>Přidat položku</CModalTitle>
+      <CModalTitle>Vypůjčit</CModalTitle>
     </CModalHeader>
     <CForm :onsubmit="save">
       <CModalBody>
