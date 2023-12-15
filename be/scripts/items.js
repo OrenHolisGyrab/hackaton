@@ -83,11 +83,12 @@ app.put_json('/items/:id([0-9]+)', async req => {
 	return await db.update('items').set(data).oneOrNone();
 });
 app.delete_json('/items/:id([0-9]+)', async req => {
-	await validateId(req.params.id, 'items');
+	const item = await validateId(req.params.id, 'items');
 
 	await db.update('items')
 		.set('deleted_at', new Date())
 		.set('code', '')
+		.where(item.id)
 		.oneOrNone();
 });
 
