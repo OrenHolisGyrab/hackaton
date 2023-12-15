@@ -44,7 +44,7 @@ async function validateItemIsNotBorrowed(id) {
 
 async function itemIsBorrowed(id) {
 	return await db.select('items')
-		.fields('items.*, ib.user')
+		.fields('items.*, ib.user, ib.borrowing_id')
 		.from('items', 'LEFT JOIN item_borrowings ib ON ib.item = items.id AND ib.returned IS NULL')
 		.where('items.id = ?', id)
 		.oneOrNone();
