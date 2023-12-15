@@ -7,6 +7,11 @@ export default createStore({
     sidebarVisible: '',
     sidebarUnfoldable: false,
     theme: 'light',
+
+    items: {
+      items: [],
+      error: null
+    }
   },
   mutations: {
     toggleSidebar(state) {
@@ -34,14 +39,14 @@ export default createStore({
       state.data.items = state.data.items.concat(data);
     },
     setItemsError(state, data) {
-      state.data = data
+      state.items.error = data;
     },
   },
   actions: {
     async getItems(context) {
       try {
         const response = await REST.GET('items');
-        context.setItems(response);
+        context.commit('setItems', response);
       } catch (error) {
         context.setItemsError(error);
       }

@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => {
   process.env = { ...process.env, ...env }
 
   return {
+    build: {
+      outDir: 'dist'
+    },
     plugins: [vue()],
     base: './',
     css: {
@@ -48,8 +51,11 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3000,
       proxy: {
-        // https://vitejs.dev/config/server-options.html
-      },
+        '/api': {
+          target: 'http://localhost:6300',
+          changeOrigin: true
+        },
+      }
     },
     define: {
       // vitejs does not support process.env so we have to redefine it
