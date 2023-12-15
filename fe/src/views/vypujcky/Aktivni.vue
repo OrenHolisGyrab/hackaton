@@ -68,7 +68,6 @@
       <CButton color="Primary" @click="() => { returnItem() }">Vrátit</CButton>
     </CModalFooter>
   </CModal>
-
 </template>
 <style>
 label {
@@ -79,7 +78,8 @@ label {
 import { ref, reactive } from "vue";
 import VypujckyTable from "./VypujckyTable";
 import { REST } from "../../utils/REST";
-import {useStore} from "vuex";
+import { useStore } from "vuex";
+import { onMounted } from 'vue'
 
 export default {
   name: 'Aktivni',
@@ -96,9 +96,12 @@ export default {
       returnModal.value = false;
     }
 
-    setTimeout(() => {
+    // setTimeout(() => {
+    //   returnModal.value = !!context.id;
+    // }, 200);
+    onMounted(() => {
       returnModal.value = !!context.id;
-    }, 200);
+    })
 
     const vypujcitModal = ref(false);
     const novaVypujcka = reactive({});
