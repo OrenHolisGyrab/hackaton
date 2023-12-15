@@ -25,6 +25,7 @@
           <CTableDataCell>
 
             <CButtonGroup role="group" aria-label="Basic outlined example">
+              <CButton color="primary" variant="outline" @click="() => { qrModal = item.id}">QR kód</CButton>
               <CButton v-if="item.edit" color="primary" variant="outline" @click="() => edit(item.id)">Upravit</CButton>
               <CButton v-if="item.delete" color="primary" variant="outline" @click="() => {deleteConfirm = item.id}">Smazat</CButton>
             </CButtonGroup>
@@ -49,6 +50,20 @@
     </CModalFooter>
   </CModal>
 
+  <CModal :visible="qrModal" @close="() => { qrModal = null }">
+    <CModalHeader>
+      <CModalTitle>QR Kód</CModalTitle>
+    </CModalHeader>
+    <CModalBody>
+      <qrcode-vue :value="`${window.location.origin}/item/${qrModal}`" />
+    </CModalBody>
+    <CModalFooter>
+      <CButton color="Primary" @click="() => { qrModal = null }">
+        Ok
+      </CButton>
+    </CModalFooter>
+  </CModal>
+
 
 </template>
 
@@ -56,13 +71,16 @@
 import {computed, ref} from "vue";
 import { useStore } from 'vuex';
 import {Formats} from "../../utils/utils";
+import QrcodeVue from 'qrcode.vue'
 
 export default {
   name: 'PolozkyTable',
   components: {
+    QrcodeVue
   },
   setup() {
     const store = useStore();
+    const qrModal = ref(false);
 
     const downloadItems = async () => await store.dispatch('getItems');
     downloadItems();
@@ -78,8 +96,10 @@ export default {
     }
 
 
+    console.log(`${window.location.host}/item/${qrModal}`);
+
     return {
-      edit, deleteConfirm, removeItem,
+      edit, deleteConfirm, removeItem, qrModal, window,
       items: computed(() => store.state.items.items.map(i => ({
         ...i,
         added: Formats.date((new Date(i.added)).getTime() / 1000),
