@@ -9,7 +9,7 @@ const app = express();
 const db = new SQLBuilder();
 
 const lendingListQuery = () => db.select()
-	.fields('item_borrowings.*, first_name, last_name, email, i.name, i.code')
+	.fields('item_borrowings.*, first_name, last_name, email, i.name AS item_name, i.code AS item_code')
 	.from(
 		'item_borrowings',
 		'INNER JOIN items i ON i.id = item_borrowings.item',
