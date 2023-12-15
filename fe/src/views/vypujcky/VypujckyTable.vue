@@ -15,7 +15,7 @@
         </CTableRow>
       </CTableHead>
       <CTableBody>
-        <CTableRow v-for="item in items" :key="item.code">
+        <CTableRow v-for="item in items" :key="item.code" :color="item.toUnformated < new Date() ?'danger': ''">
           <CTableDataCell class="text-center"> {{ item.item_code }} </CTableDataCell>
           <CTableDataCell v-if="!hidePerson">
             <div>{{ item.first_name }} {{ item.last_name }} ({{ item.email }})</div>
@@ -143,6 +143,7 @@ export default {
         from: Formats.date((new Date(i.from)).getTime() / 1000),
         to: Formats.date((new Date(i.to)).getTime() / 1000),
         prolonged: i.prolonged ? "Ano" : "Ne",
+        toUnformated: new Date(i.to),
         //buttons enabled
         btns: context.actions
       }))),
