@@ -20,7 +20,11 @@
             <br>
             <CRow>
               <CCol>
-                <VypujckyTable :items="vypujcky"></VypujckyTable>
+                <VypujckyTable :items="vypujcky" :actions="{
+                  detail: true,
+                  return: true,
+                  longer: true,
+                }"></VypujckyTable>
               </CCol>
             </CRow>
           </CCardBody>

@@ -1,20 +1,48 @@
 <template>
-  <div>
-    <CTable :columns="data.columns" :items="items" hower striped />
+  <CNav class="justify-content-end">
+    <CNavItem>
+      <CNavLink href="#" active>
+        <CButton color="primary" size="lg" @click="addItem()">
+          Přidat
+        </CButton>
 
+      </CNavLink>
+    </CNavItem>
+  </CNav>
+  <div>
+    <PolozkyTable :items="items" :actions="{
+      edit: true,
+      delete: true,
+    }"></PolozkyTable>
+    <!-- {{ items }} -->
   </div>
+
+
+  <CModal :visible="addItemModal" @close="() => { addItemModal = false }">
+    <CModalHeader>
+      <CModalTitle>Opravdu smazat?</CModalTitle>
+    </CModalHeader>
+    <CModalBody>Pložka bude nenávratně odstranea!</CModalBody>
+    <CModalFooter>
+      <CButton color="secondary" @click="() => { addItemModal = false }">
+        Ne
+      </CButton>
+      <CButton color="danger">Smazat</CButton>
+    </CModalFooter>
+  </CModal>
 </template>
 
 <script>
 
-import {Formats} from "../../utils/utils";
+import { Formats } from "../../utils/utils";
 import { ref } from "vue";
 import { useStore } from 'vuex'
+import PolozkyTable from "./PolozkyTable.vue";
 
 export default {
-  name: 'Dashboard',
+  name: 'Polozky',
   computed: {
-    items () {
+    items() {
       return this.$store.state.items.items.map(i => ({
         ...i,
         added: Formats.date((new Date(i.added)).getTime() / 1000)
@@ -22,51 +50,19 @@ export default {
     }
   },
   components: {
+    PolozkyTable
   },
   setup() {
     const store = useStore();
 
-    let data = ref(
-      {
-        columns: [
-          {
-            key: 'code',
-            label: 'Kód položky',
-            _props: { scope: 'col' },
-          },
-          {
-            key: 'name',
-            label: 'Název položky',
-            _props: { scope: 'col' },
-          },
-          {
-            key: 'description',
-            label: 'Popis',
-            _props: { scope: 'col' },
-          },
-          {
-            key: 'room',
-            label: 'Místnost',
-            _props: { scope: 'col' },
-          },
-          {
-            key: 'added',
-            label: 'Přidáno do inventáře',
-            _props: { scope: 'col' }
-          },
-          {
-            key: 'serial_number',
-            label: 'Výrobní číslo',
-            _props: { scope: 'col' },
-          }
-        ],
-      }
-    );
-
     const downloadItems = async () => await store.dispatch('getItems');
     downloadItems();
 
-    return {data}
+    const addItemModal = ref(false)
+    const addItem = () => {
+      addItemModal.value = true;
+    }
+    return { addItem, addItemModal }
   },
 }
 </script>

@@ -77,7 +77,6 @@ export default {
 
     const downloadItems = async () => await store.dispatch('getBorrowings', 'active');
     downloadItems();
-    console.log('aaa');
 
     return {actions}
   },
