@@ -59,7 +59,11 @@
           <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
         </li>
         <AppHeaderDropdownAccnt />
-        <div>Tady Google login</div>
+        <div>
+          <a :href="getGoogleUrl('/')" class="google-auth">
+            <img :src="GoogleLogo" alt="Google Logo" />
+          </a>
+        </div>
       </CHeaderNav>
     </CContainer>
     <CContainer class="px-4" fluid>
@@ -68,11 +72,33 @@
   </CHeader>
 </template>
 
+<style>
+          .google-auth {
+            background-color: #fff;
+            border-radius: 1px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease-in-out;
+          }
+
+          .google-auth img {
+            height: 2.5rem;
+          }
+
+          .google-auth:hover {
+            box-shadow: 0 1px 13px 0 rgb(0 0 0 / 15%);
+          }
+          </style>
+
 <script>
 import { onMounted, ref } from 'vue'
 import { useColorModes } from '@coreui/vue'
 import AppBreadcrumb from './AppBreadcrumb'
 import AppHeaderDropdownAccnt from './AppHeaderDropdownAccnt'
+import GoogleLogo from '../assets/images/google.svg';
+import { getGoogleUrl } from '../utils/getGoogleUrl';
 export default {
   name: 'AppHeader',
   components: {
@@ -97,6 +123,8 @@ export default {
       headerClassNames,
       colorMode,
       setColorMode,
+      GoogleLogo,
+      getGoogleUrl
     }
   },
 }
