@@ -39,23 +39,19 @@ const routes = [
           {
             path: 'aktivni',
             name: 'Aktivni',
-            redirect: '/vypujcky/aktivni',
-            children: [
-              {
-                path: 'create/:code?',
-                name: 'Create',
-                component: () => import('@/views/vypujcky/Aktivni.vue'),
-              },
-              {
-                path: 'return/:id?',
-                name: 'Return',
-                component: () => import('@/views/vypujcky/Aktivni.vue'),
-              },
-              {
-                path: '/',
-                name: 'Create',
-                component: () => import('@/views/vypujcky/Aktivni.vue'),
-              }],
+            component: () => import('@/views/vypujcky/Aktivni.vue'),
+          },
+          {
+            path: 'aktivni/create/:code?',
+            name: 'Create',
+            props: true,
+            component: () => import('@/views/vypujcky/Aktivni.vue'),
+          },
+          {
+            path: 'aktivni/return/:id?',
+            name: 'Return',
+            props: true,
+            component: () => import('@/views/vypujcky/Aktivni.vue'),
           },
           {
             path: 'historie',
