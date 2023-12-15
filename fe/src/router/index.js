@@ -94,6 +94,12 @@ const routes = [
         name: 'Page500',
         component: () => import('@/views/pages/Page500'),
       },
+      {
+        path: 'scan',
+        name: 'scanner',
+        component: () => import('@/views/scanner/vypujcky/Scanner'),
+      },
+
     ],
   },
 ]

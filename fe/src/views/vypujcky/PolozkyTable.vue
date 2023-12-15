@@ -41,7 +41,7 @@
     <CModalHeader>
       <CModalTitle>Opravdu smazat?</CModalTitle>
     </CModalHeader>
-    <CModalBody>Pložka bude nenávratně odstranea!</CModalBody>
+    <CModalBody>Pložka bude nenávratně odstraněna!</CModalBody>
     <CModalFooter>
       <CButton color="secondary" @click="() => { deleteConfirm = false }">
         Ne
