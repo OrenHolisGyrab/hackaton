@@ -4,22 +4,25 @@
 </template>
 
 <script>
-import { ref, reactive } from "vue";
-import VypujckyTable from "./VypujckyTable";
 import { REST } from "../../utils/REST";
-import {useStore} from "vuex";
+import router from "../../router";
 
 export default {
   name: 'Scanner',
   props: { code: { type: String } },
   setup(context) {
-    const store = useStore();
-    console.log(
-      context.code
-    );
 
-    return {
-    }
+    (async () => {
+      const borrowed = await REST.GET(`lending/item/${context.code}/borrowed`);
+
+      if (!borrowed.user) {
+        await router.push(`/vypujcky/aktivni/${borrowed.code}/create`);
+      } else {
+        await router.push(`/vypujcky/aktivni/${borrowed.id}/return`);
+      }
+    })();
+
+    return {}
   },
 }
 </script>

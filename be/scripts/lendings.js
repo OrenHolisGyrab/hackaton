@@ -43,7 +43,11 @@ async function validateItemIsNotBorrowed(id) {
 }
 
 async function itemIsBorrowed(id) {
-	return !!(await db.select('item_borrowings').where('item = ?', id).oneOrNone());
+	return await db.select('items')
+		.fields('items.*, ib.user')
+		.from('items', 'LEFT JOIN item_borrowings ib ON ib.item = items.id AND ib.returned IS NULL')
+		.where('items.id = ?', id)
+		.oneOrNone();
 }
 
 app.get_json('/lending/all', async req => await lendingListQuery().getList());

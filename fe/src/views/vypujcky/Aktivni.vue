@@ -56,6 +56,18 @@
     </CForm>
   </CModal>
 
+  <CModal :visible="returnModal" @close="() => { returnModal = null }">
+    <CModalHeader>
+      <CModalTitle>QR Kód</CModalTitle>
+    </CModalHeader>
+    <CModalBody>
+      Chcete vrátit tuto položku?
+    </CModalBody>
+    <CModalFooter>
+      <CButton color="Secondary" @click="() => { returnModal = null }">Zrušit</CButton>
+      <CButton color="Primary" @click="() => { returnItem() }">Vrátit</CButton>
+    </CModalFooter>
+  </CModal>
 
 </template>
 <style>
@@ -74,15 +86,21 @@ export default {
   components: {
     VypujckyTable
   },
+  props: ['code', 'id'],
   setup(context) {
     const store = useStore();
 
-    const vypujcitModal = ref(false);
+    const returnModal = ref(!!context.id);
+    const returnItem = async () => {
+      await store.dispatch('returnBorrowing', context.id);
+      returnModal.value = false;
+    }
+
+    const vypujcitModal = ref(!!context.code);
     const pujcit = () => {
       vypujcitModal.value = true;
       loadItems()
     }
-
 
     const novaVypujcka = reactive({});
 
@@ -97,7 +115,7 @@ export default {
     }
 
     return {
-      pujcit, vypujcitModal, novaVypujcka, save, freeItems
+      pujcit, vypujcitModal, novaVypujcka, save, freeItems, returnModal, returnItem
     }
   },
 }
