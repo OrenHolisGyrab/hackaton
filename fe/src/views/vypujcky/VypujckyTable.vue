@@ -50,11 +50,12 @@ export default {
   name: 'Dashboard',
   components: {
   },
-  setup() {
+  props: ['mode', 'actions'],
+  setup(context) {
     const store = useStore();
     let actions = true;
 
-    const downloadItems = async () => await store.dispatch('getBorrowings', 'active');
+    const downloadItems = async () => await store.dispatch('getBorrowings', context.mode);
     downloadItems();
 
     return {
@@ -65,12 +66,7 @@ export default {
         to: Formats.date((new Date(i.to)).getTime() / 1000),
         prolonged: i.prolonged ? "Ano" : "Ne",
         //buttons enabled
-        btns: {
-          detail: true,
-          return: actions,
-          longer: actions,
-          prolong: true
-        }
+        btns: context.actions
       }))),
     }
   },

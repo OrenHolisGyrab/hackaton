@@ -20,7 +20,7 @@
             <br>
             <CRow>
               <CCol>
-                <VypujckyTable :items="vypujcky" :actions="{
+                <VypujckyTable :mode="'active'" :actions="{
                   detail: true,
                   return: true,
                   longer: true,
@@ -65,7 +65,7 @@ label {
 }
 </style>
 <script>
-import { ref, reactive, computed } from "vue";
+import { ref, reactive } from "vue";
 import VypujckyTable from "./VypujckyTable";
 import { REST } from "../../utils/REST";
 import {useStore} from "vuex";
@@ -77,23 +77,6 @@ export default {
   },
   setup(context) {
     const store = useStore();
-
-    let vypujcky = ref(
-      [
-        {
-          id: "1234",
-          item_code: 'DHM-2002',
-          first_name: 'Mark',
-          last_name: " Nopeeee",
-          email: 'mmm@asd.cz',
-          from: '3.3.2000',
-          to: '3.5.5000',
-          item_name: 'Name',
-          note: 'Poznamkskkaksk',
-          prolonged: true,
-        },
-
-      ])
 
     const vypujcitModal = ref(false);
     const pujcit = () => {
@@ -111,11 +94,10 @@ export default {
     const freeItems = ref([]);
     let loadItems = async () => {
       freeItems.value = await REST.GET("lending/free/items");
-      console.log(freeItems.value);
     }
 
     return {
-      vypujcky, pujcit, vypujcitModal, novaVypujcka, save, freeItems
+      pujcit, vypujcitModal, novaVypujcka, save, freeItems
     }
   },
 }

@@ -20,7 +20,7 @@
             <br>
             <CRow>
               <CCol>
-                <VypujckyTable :items="vypujcky" :actions="{
+                <VypujckyTable :mode="'historic'" :actions="{
                   detail: true,
                   return: false,
                   longer: false,
@@ -43,27 +43,6 @@ export default {
   components: {
     VypujckyTable
   },
-  setup(context) {
-
-    let vypujcky = ref(
-      [
-        {
-          id: "1234",
-          item_code: 'DHM-2002',
-          first_name: 'NOOOOOOO',
-          last_name: " Nopeeee",
-          email: 'mmm@asd.cz',
-          from: '3.3.2000',
-          to: '3.5.5000',
-          item_name: 'Name',
-          note: 'Poznamkskkaksk',
-          prolonged: true,
-        },
-
-      ])
-    return {
-      vypujcky
-    }
-  },
+  setup(context) {},
 }
 </script>
