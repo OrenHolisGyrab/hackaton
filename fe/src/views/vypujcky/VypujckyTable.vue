@@ -5,7 +5,7 @@
       <CTableHead class="text-nowrap">
         <CTableRow>
           <CTableHeaderCell class="bg-body-secondary"> Kód </CTableHeaderCell>
-          <CTableHeaderCell class="bg-body-secondary text-center"> Člověk </CTableHeaderCell>
+          <CTableHeaderCell v-if="!hidePerson" class="bg-body-secondary text-center" > Člověk </CTableHeaderCell>
           <CTableHeaderCell class="bg-body-secondary text-center"> Od </CTableHeaderCell>
           <CTableHeaderCell class="bg-body-secondary"> Do </CTableHeaderCell>
           <CTableHeaderCell class="bg-body-secondary"> Nazev </CTableHeaderCell>
@@ -17,7 +17,7 @@
       <CTableBody>
         <CTableRow v-for="item in items" :key="item.code">
           <CTableDataCell class="text-center"> {{ item.item_code }} </CTableDataCell>
-          <CTableDataCell v-if="item.first_name">
+          <CTableDataCell v-if="!hidePerson">
             <div>{{ item.first_name }} {{ item.last_name }} ({{ item.email }})</div>
           </CTableDataCell>
           <CTableDataCell class="text-center"> {{ item.from }} </CTableDataCell>
@@ -105,7 +105,7 @@ export default {
   name: 'Dashboard',
   components: {
   },
-  props: ['mode', 'actions'],
+  props: ['mode', 'actions', 'hidePerson'],
   setup(context) {
     const store = useStore();
     let actions = true;
@@ -137,6 +137,7 @@ export default {
       openDetail,
       returnBorrowing,
       actions,
+      hidePerson: context.hidePerson || false,
       items: computed(() => store.state.borrowings.list.map(i => ({
         ...i,
         from: Formats.date((new Date(i.from)).getTime() / 1000),

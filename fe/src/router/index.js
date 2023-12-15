@@ -64,7 +64,11 @@ const routes = [
       },
     ],
   },
-
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/pages/Login.vue'),
+  },
   {
     path: '/',
     redirect: '/404',

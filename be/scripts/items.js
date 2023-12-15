@@ -87,7 +87,6 @@ app.delete_json('/items/:id([0-9]+)', async req => {
 
 	await db.update('items')
 		.set('deleted_at', new Date())
-		.set('code', '')
 		.whereId(item.id)
 		.oneOrNone();
 });

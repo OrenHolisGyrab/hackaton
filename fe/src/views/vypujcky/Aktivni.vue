@@ -6,10 +6,7 @@
           <CCardBody>
             <CRow>
               <CCol :sm="5">
-                <h4 id="traffic" class="card-title mb-0">Aktivni
-
-                </h4>
-                <div class="small text-body-secondary">January 2021</div>
+                <h4 id="traffic" class="card-title mb-0">Aktivní</h4>
               </CCol>
               <CCol class="">
                 <CButton color="primary" class="float-end" size="lg" @click="pujcit()">

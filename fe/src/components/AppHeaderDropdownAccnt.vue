@@ -8,11 +8,11 @@
         component="h6"
         class="bg-body-secondary text-body-secondary fw-semibold mb-2 rounded-top"
       >
-        
+
         Account
       </CDropdownHeader>
-      <CDropdownItem>
-        <CIcon icon="cil-lock-locked" /> Logout
+      <CDropdownItem @click="() => logout()">
+        <CIcon icon="cil-lock-locked"/> Odhlásit
       </CDropdownItem>
     </CDropdownMenu>
   </CDropdown>
@@ -20,10 +20,18 @@
 
 <script>
 import avatar from '@/assets/images/avatars/8.jpg'
+import {useStore} from "vuex";
+import router from "../router";
+
 export default {
   name: 'AppHeaderDropdownAccnt',
   setup() {
+    const store = useStore();
+
+    const logout = async () => await store.dispatch('logout');
+
     return {
+      logout,
       avatar: avatar,
       itemsCount: 42,
     }

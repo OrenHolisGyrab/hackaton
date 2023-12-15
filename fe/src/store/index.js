@@ -77,6 +77,10 @@ export default createStore({
     setSession(state, data) {
       state.session = data;
     },
+    logout(state, data) {
+      state.session = null;
+      state.error = true;
+    },
     setSessionError(state, data) {
       state.error = data;
     },
@@ -101,6 +105,15 @@ export default createStore({
       try {
         const response = await REST.GET('session');
         context.commit('setSession', response);
+      } catch (error) {
+        context.commit('setSessionError', error);
+      }
+    },
+
+    async logout(context) {
+      try {
+        await REST.DELETE('session');
+        context.commit('logout');
       } catch (error) {
         context.commit('setSessionError', error);
       }
