@@ -6,6 +6,7 @@ const sessions = require('./scripts/sessions.js');
 const env = require('./scripts/env.js');
 const users = require('./scripts/users.js');
 const items = require('./scripts/items.js');
+const lending = require('./scripts/lendings.js');
 const {hasAtLeastRole} = require("./scripts/utils/validations");
 
 const app = express();
@@ -35,6 +36,8 @@ app.all_json('/api/*', async req => {
 
 	return FallThrough;
 });
+
+app.use('/api', lending.app);
 
 app.all_json('/api/*', async req => {
 	if (!hasAtLeastRole(req.session, 'ADMIN')) {

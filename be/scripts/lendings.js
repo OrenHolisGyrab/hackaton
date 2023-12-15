@@ -30,7 +30,7 @@ app.get_json('/lending', async req => {
 
 // administration
 
-app.all_json('/api/*', async req => {
+app.all_json('/lending/*', async req => {
 	if (!hasAtLeastRole(req.session, 'WORKER')) {
 		throw new Unauthorized('Your role is too low to perform this operation');
 	}

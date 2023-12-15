@@ -34,6 +34,12 @@
             </CButtonGroup>
 
           </CTableDataCell>
+
+          <!-- <CTableDataCell>
+            <div class="small text-body-secondary">Last login</div>
+            <div class="fw-semibold text-nowrap">
+            </div>
+          </CTableDataCell> -->
         </CTableRow>
       </CTableBody>
     </CTable>
@@ -42,31 +48,15 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import { Formats } from "../../utils/utils";
+import {useStore} from "vuex";
 export default {
   name: 'Dashboard',
-  props: {
-    items: {
-      type: Array,
-      default: []
-    }
-  },
   components: {
   },
-  setup(context) {
-    //kód, clovek,od,do, nazev polozky, poznámka, prodlouženo, tkacitka: detail, vrátit, prodlouzit 
-
-    let items = context.items;
-    console.log(items);
-
-    let actions = true;
-
-    if (!items[0].from) {
-      console.log("no data");
-    } else
-
-      items = items.map(i => ({
+  computed: {
+    items () {
+      return this.$store.state.borrowings.list.map(i => ({
         ...i,
         from: Formats.date((new Date(i.from)).getTime() / 1000),
         to: Formats.date((new Date(i.to)).getTime() / 1000),
@@ -78,13 +68,18 @@ export default {
           longer: actions,
           prolong: true
         }
-      }))
-
-
-    return {
-      items,
-      actions
+      }));
     }
+  },
+  setup() {
+    const store = useStore();
+    let actions = true;
+
+    const downloadItems = async () => await store.dispatch('getBorrowings', 'active');
+    downloadItems();
+    console.log('aaa');
+
+    return {actions}
   },
 }
 </script>

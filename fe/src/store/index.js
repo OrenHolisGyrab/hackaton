@@ -11,6 +11,11 @@ export default createStore({
     items: {
       items: [],
       error: null
+    },
+
+    borrowings: {
+      list: [],
+      error: null
     }
   },
   mutations: {
@@ -41,6 +46,24 @@ export default createStore({
     setItemsError(state, data) {
       state.items.error = data;
     },
+
+    setBorrowings(state, data) {
+      state.borrowings.list = data;
+    },
+    pushBorrowings(state, data) {
+      state.borrowings.list.push(data);
+    },
+    prolongeBorrowing(state, data) {
+      const idx = state.borrowings.list.findIndex(b => b.id === data.id);
+      state.borrowings.list[idx].to = data.to;
+    },
+    returnBorrowing(state, data) {
+      const idx = state.borrowings.list.findIndex(b => b.id === data.id);
+      state.borrowings.list[idx].returned = data.returned;
+    },
+    setBorrowingsError(state, data) {
+      state.borrowings.error = data;
+    },
   },
   actions: {
     async getItems(context) {
@@ -48,41 +71,74 @@ export default createStore({
         const response = await REST.GET('items');
         context.commit('setItems', response);
       } catch (error) {
-        context.setItemsError(error);
+        context.commit('setItemsError', error);
       }
     },
     async newItem(context, data) {
       try {
         const response = await REST.POST('items', data);
-        context.addItem(response);
+        context.commit('addItem', response);
       } catch (error) {
-        context.setItemsError(error);
+        context.commit('setItemsError', error);
       }
     },
     async updateItem(context, {id, data}) {
       try {
         const response = await REST.POST(`items/${id}`, data);
-        context.updateItem(response);
+        context.commit('updateItem', response);
       } catch (error) {
-        context.setItemsError(error);
+        context.commit('setItemsError', error);
       }
     },
     async deleteItem(context, id) {
       try {
         const response = await REST.DELETE(`items/${id}`);
-        context.deleteItem(response);
+        context.commit('deleteItem', response);
       } catch (error) {
-        context.setItemsError(error);
+        context.commit('setItemsError', error);
       }
     },
     async importItems(context, file) {
       try {
         const response = await Uploads.uploadFile(`items/import`, file);
-        context.importItems(response);
+        context.commit('importItems', response);
       } catch (error) {
-        context.setItemsError(error);
+        context.commit('setItemsError', error);
       }
-    }
+    },
+
+    async getBorrowings(context, mode) {
+      try {
+        const response = await REST.GET(`lending/${mode}`);
+        context.commit('setBorrowings', response);
+      } catch (error) {
+        context.commit('setBorrowingsError', error);
+      }
+    },
+    async newBorrowing(context, data) {
+      try {
+        const response = await REST.POST(`lending`, data);
+        context.commit('pushBorrowings', response);
+      } catch (error) {
+        context.commit('setBorrowingsError', error);
+      }
+    },
+    async prolongeBorrowing(context, {id, data}) {
+      try {
+        const response = await REST.GET(`lending/${id}`, data);
+        context.commit('prolongeBorrowing', response);
+      } catch (error) {
+        context.commit('setBorrowingsError', error);
+      }
+    },
+    async returnBorrowing(context, id) {
+      try {
+        const response = await REST.GET(`lending/${id}/returned`);
+        context.commit('returnBorrowing', response);
+      } catch (error) {
+        context.commit('setBorrowingsError', error);
+      }
+    },
   },
   modules: {},
 })
