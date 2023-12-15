@@ -7,6 +7,7 @@ const env = require('./scripts/env.js');
 const users = require('./scripts/users.js');
 const items = require('./scripts/items.js');
 const lending = require('./scripts/lendings.js');
+const Google = require('./scripts/Google.js');
 const {hasAtLeastRole} = require("./scripts/utils/validations");
 
 const app = express();
@@ -18,13 +19,12 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use('/api', sessions.app);
-
+app.use('/api', Google.app);
 
 /* ALL OTHER MODULES NEED SESSION */
 
 app.all_json('/api/*', async req => {
-	req.session = {role: 'ADMIN'}
-	/*req.session = await sessions.getSessionUser(req.cookies['bccptts-session']);
+	req.session = await sessions.getSessionUser(req.cookies['borrowing-session']);
 
 	if (!req.session.active) {
 		throw new ApiError(401, 'Your account must be active')
@@ -32,7 +32,7 @@ app.all_json('/api/*', async req => {
 
 	if (!req.session) {
 		throw new ApiError(401, 'You must be authenticated to perform this operation');
-	}*/
+	}
 
 	return FallThrough;
 });

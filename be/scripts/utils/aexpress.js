@@ -117,6 +117,18 @@ express.application.get_file = function (path, fn) {
 	});
 }
 
+express.application.get_handle_error = function (path, fn) {
+	this.get(path, async (req, res, next) => {
+		req.res.set('Cache-Control', 'no-store');
+
+		try {
+			await fn(req, res, next);
+		} catch (ex) {
+			handle_error(ex, res);
+		}
+	});
+}
+
 express.application.post_upload = function (path, middleware, callback) {
 	this.post(path, middleware, async (req, res, next) => {
 		try {

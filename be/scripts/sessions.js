@@ -65,7 +65,7 @@ async function verify_password(hash, pw) {
  */
 async function getSessionUser(sessionId) {
 	const session = await db.select()
-		.fields('users.username, users.id, users.active, users.role, company')
+		.fields('first_name, last_name, email, users.id, users.active, users.role')
 		.from('sessions', 'INNER JOIN users ON users.id = sessions.user')
 		.where('sessions.session_id = ?', sessionId)
 		.oneOrNone();
@@ -89,52 +89,16 @@ async function getUserInternal(id) {
 		.oneOrNone();
 }
 
-app.post_json('/session', async (req, res) => {
-	const {username, password} = req.body;
-
-	validateStringNotEmpty(username, 'Username');
-	validateStringNotEmpty(password, 'Password');
-
-	const user = await db.select('users')
-		.where('username = ?', username)
-		.oneOrNone();
-
-	if (!user) {
-		throw new ApiError(404, 'User not found');
-	}
-
-	if (!user.active) {
-		throw new ApiError(400, 'User is deactivated');
-	}
-
-	const passValidated = await verify_password(user.password, password);
-	if (!passValidated) {
-		throw new ApiError(401, 'Invalid password');
-	}
-
-	const sessionId = (await random_bytes(24)).toString('hex');
-
-	await db.insert('sessions', {
-			session_id: sessionId,
-			user: user.id
-		})
-		.run();
-
-	res.cookie('bccptts-session', sessionId, {maxAge: 1000 * 60 * 60 * 24 * 31, httpOnly: true, secure: false, sameSite: 'strict'});
-
-	return await getSessionUser(sessionId);
-});
-
 app.get_json('/session', async (req) => {
-	return await getSessionUser(req.cookies['bccptts-session']);
+	return await getSessionUser(req.cookies['borrowing-session']);
 });
 
 app.delete_json('/session', async (req, res) => {
 	await db.delete('sessions')
-		.where('session_id = ?', req.cookies['bccptts-session'])
+		.where('session_id = ?', req.cookies['borrowing-session'])
 		.run();
 
-	res.clearCookie('bccptts-session', {maxAge: 1000 * 60 * 60 * 24 * 31, httpOnly: true});
+	res.clearCookie('borrowing-session', {maxAge: 1000 * 60 * 60 * 24 * 31, httpOnly: true});
 });
 
 module.exports = {

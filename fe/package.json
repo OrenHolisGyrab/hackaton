@@ -26,6 +26,7 @@
     "@coreui/vue": "^5.0.0-rc.0",
     "@coreui/vue-chartjs": "^3.0.0-rc.0",
     "@popperjs/core": "^2.11.8",
+    "body-parser": "^1.20.2",
     "chart.js": "^4.4.0",
     "vue": "^3.3.9",
     "vue-router": "^4.2.5",
