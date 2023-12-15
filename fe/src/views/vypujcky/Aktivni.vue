@@ -90,19 +90,27 @@ export default {
   setup(context) {
     const store = useStore();
 
-    const returnModal = ref(!!context.id);
+    const returnModal = ref(false);
     const returnItem = async () => {
       await store.dispatch('returnBorrowing', context.id);
       returnModal.value = false;
     }
 
-    const vypujcitModal = ref(!!context.code);
+    setTimeout(() => {
+      returnModal.value = !!context.id;
+    }, 200);
+
+    const vypujcitModal = ref(false);
+    const novaVypujcka = reactive({});
     const pujcit = () => {
       vypujcitModal.value = true;
       loadItems()
     }
 
-    const novaVypujcka = reactive({});
+    setTimeout(() => {
+      vypujcitModal.value = !!context.code;
+      novaVypujcka.item = context.code;
+    }, 200);
 
     const save = async () => {
       await store.dispatch('newBorrowing', novaVypujcka);
