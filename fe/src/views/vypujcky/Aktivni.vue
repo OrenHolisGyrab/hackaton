@@ -20,27 +20,45 @@
             <br>
             <CRow>
               <CCol>
-                <VypujckyTable></VypujckyTable>
+                <VypujckyTable :items="vypujcky"></VypujckyTable>
               </CCol>
             </CRow>
           </CCardBody>
         </CCard>
       </CCol>
     </CRow>
-    
+
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
 import VypujckyTable from "./VypujckyTable";
 export default {
   name: 'Aktivni',
   components: {
     VypujckyTable
   },
-  setup() {
+  setup(context) {
 
+    let vypujcky = ref(
+      [
+        {
+          id: "1234",
+          item_code: 'DHM-2002',
+          first_name: 'Mark',
+          last_name: " Nopeeee",
+          email: 'mmm@asd.cz',
+          from: '3.3.2000',
+          to: '3.5.5000',
+          item_name: 'Name',
+          note: 'Poznamkskkaksk',
+          prolonged: true,
+        },
+
+      ])
     return {
+      vypujcky
     }
   },
 }

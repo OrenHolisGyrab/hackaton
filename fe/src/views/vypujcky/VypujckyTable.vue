@@ -32,14 +32,8 @@
               <CButton v-if="item.btns.longer" color="primary" variant="outline">Prodloužit</CButton>
               <CButton v-if="item.btns.return" color="primary" variant="outline">Vrátit</CButton>
             </CButtonGroup>
-            
-          </CTableDataCell>
 
-          <!-- <CTableDataCell>
-            <div class="small text-body-secondary">Last login</div>
-            <div class="fw-semibold text-nowrap">
-            </div>
-          </CTableDataCell> -->
+          </CTableDataCell>
         </CTableRow>
       </CTableBody>
     </CTable>
@@ -52,30 +46,27 @@ import { ref } from "vue";
 import { Formats } from "../../utils/utils";
 export default {
   name: 'Dashboard',
+  props: {
+    items: {
+      type: Array,
+      default: []
+    }
+  },
   components: {
   },
-  setup() {
+  setup(context) {
     //kód, clovek,od,do, nazev polozky, poznámka, prodlouženo, tkacitka: detail, vrátit, prodlouzit 
 
+    let items = context.items;
+    console.log(items);
 
     let actions = true;
 
-    let items =
-      [
-        {
-          id: "1234",
-          item_code: 'DHM-2002',
-          first_name: 'Mark',
-          last_name: " Nopeeee",
-          email: 'mmm@asd.cz',
-          from: '3.3.2000',
-          to: '3.5.5000',
-          item_name: 'Name',
-          note: 'Poznamkskkaksk',
-          prolonged: true,
-        },
+    if (!items[0].from) {
+      console.log("no data");
+    } else
 
-      ].map(i => ({
+      items = items.map(i => ({
         ...i,
         from: Formats.date((new Date(i.from)).getTime() / 1000),
         to: Formats.date((new Date(i.to)).getTime() / 1000),
