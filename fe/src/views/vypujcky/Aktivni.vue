@@ -40,15 +40,9 @@
     </CModalHeader>
     <CForm :onsubmit="save">
       <CModalBody>
-        <CFormInput v-model="novaVypujcka.item_code" list="datalistOptions" type="search" label="Kód položky" placeholder="vyhledat" text="todo: skenovat" required />
+        <CFormInput v-model="novaVypujcka.item" list="datalistOptions" type="search" label="Kód položky" placeholder="vyhledat" text="todo: skenovat" required />
         <datalist id="datalistOptions">
-          <option v-for="item in freeItems" :value="item.code">
-          </option>
-          <option value="San Francisco"></option>
-          <option value="New York"></option>
-          <option value="Seattle"></option>
-          <option value="Los Angeles"></option>
-          <option value="Chicago"></option>
+          <option v-for="item in freeItems" :value="item.code" />
         </datalist>
         <CFormInput v-model="novaVypujcka.email" type="email" label="Student" placeholder="email studenta" required />
 
@@ -74,12 +68,15 @@ label {
 import { ref, reactive, computed } from "vue";
 import VypujckyTable from "./VypujckyTable";
 import { REST } from "../../utils/REST";
+import {useStore} from "vuex";
+
 export default {
   name: 'Aktivni',
   components: {
     VypujckyTable
   },
   setup(context) {
+    const store = useStore();
 
     let vypujcky = ref(
       [
@@ -105,9 +102,10 @@ export default {
     }
 
     const novaVypujcka = reactive({});
-    const save = () => {
-      console.log("save");
-      console.log(novaVypujcka);
+
+    const save = async () => {
+      await store.dispatch('newBorrowing', novaVypujcka);
+      vypujcitModal.value = false
     }
 
     const freeItems = ref([]);

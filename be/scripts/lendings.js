@@ -49,13 +49,14 @@ async function validateItemIsNotBorrowed(id) {
 	}
 }
 
+async function itemIsBorrowed(id) {
+	return !!(await db.select('item_borrowings').where('item = ?', id).oneOrNone());
+}
+
 app.get_json('/lending/all', async req => await lendingListQuery().getList());
 app.get_json('/lending/active', async req => await lendingListQuery().where('returned IS NULL').getList());
 app.get_json('/lending/historic', async req => await lendingListQuery().where('returned IS NOT NULL').getList());
-app.get_json('/lending/item/:id([0-9]+)/borrowed', async req => {
-	const id = parseId(req.params.id);
-	return !!(await db.select('item_borrowings').where('item = ?', id).oneOrNone());
-});
+app.get_json('/lending/item/:id([0-9]+)/borrowed', async req => await itemIsBorrowed(parseId(req.params.id)));
 
 app.get_json('/lending/free/items', async req => await db.select()
 	.fields('items.*')
@@ -71,18 +72,25 @@ app.post_json('/lending', async req => {
 	validateAjvScheme(ItemBorrowing, req.body);
 	data.from = validateValidDate(data.from);
 	data.to = validateValidDate(data.to);
-	const item = await validateId(data.item, 'items');
-	const user = await db.select('users').where('email = ?', data.user).oneOrNone();
+	const item = (await db.select('items')
+		.from('items', 'LEFT JOIN item_borrowings ib ON ib.item = items.id AND ib.returned IS NULL')
+		.where('code = ?', data.item)
+		.where('ib.id IS NULL')
+		.getList())?.[0];
 
-	if (user.role !== 'STUDENT') {
-		throw new BadRequest('Cannot lend item other user than student');
+	if (!item) {
+		throw new NotFound('Item not found');
 	}
 
-	if (!data.user) {
+	const user = await db.select('users').where('email = ?', data.email).oneOrNone();
+
+	/*if (user.role !== 'STUDENT') {
+		throw new BadRequest('Cannot lend item other user than student');
+	}*/
+
+	if (!user) {
 		throw new NotFound('User not found');
 	}
-
-	await validateItemIsNotBorrowed(item.id);
 
 	const borrowing = await db.insert('item_borrowings', {
 		"user": user.id,
@@ -93,7 +101,7 @@ app.post_json('/lending', async req => {
 		confirmed: true,
 	}).oneOrNone();
 
-	return await lendingListQuery().whereId(borrowing.id).oneOrNone();
+	return await lendingListQuery().where('item_borrowings.id = ?', borrowing.id).oneOrNone();
 });
 app.put_json('/lending/:id([0-9]+)', async req => {
 	const borrowing = await validateId(req.params.id, 'item_borrowings')

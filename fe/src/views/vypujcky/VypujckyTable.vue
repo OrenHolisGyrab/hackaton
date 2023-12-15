@@ -35,11 +35,6 @@
 
           </CTableDataCell>
 
-          <!-- <CTableDataCell>
-            <div class="small text-body-secondary">Last login</div>
-            <div class="fw-semibold text-nowrap">
-            </div>
-          </CTableDataCell> -->
         </CTableRow>
       </CTableBody>
     </CTable>
@@ -50,13 +45,21 @@
 <script>
 import { Formats } from "../../utils/utils";
 import {useStore} from "vuex";
+import {computed} from "vue";
 export default {
   name: 'Dashboard',
   components: {
   },
-  computed: {
-    items () {
-      return this.$store.state.borrowings.list.map(i => ({
+  setup() {
+    const store = useStore();
+    let actions = true;
+
+    const downloadItems = async () => await store.dispatch('getBorrowings', 'active');
+    downloadItems();
+
+    return {
+      actions,
+      items: computed(() => store.state.borrowings.list.map(i => ({
         ...i,
         from: Formats.date((new Date(i.from)).getTime() / 1000),
         to: Formats.date((new Date(i.to)).getTime() / 1000),
@@ -68,17 +71,8 @@ export default {
           longer: actions,
           prolong: true
         }
-      }));
+      }))),
     }
-  },
-  setup() {
-    const store = useStore();
-    let actions = true;
-
-    const downloadItems = async () => await store.dispatch('getBorrowings', 'active');
-    downloadItems();
-
-    return {actions}
   },
 }
 </script>

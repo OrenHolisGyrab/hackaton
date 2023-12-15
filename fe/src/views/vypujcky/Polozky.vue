@@ -2,7 +2,7 @@
   <CNav class="justify-content-end">
     <CNavItem>
       <CNavLink href="#" active>
-        <CButton color="primary" size="lg" @click="addItem()">
+        <CButton color="primary" size="lg" @click="addItemDialogOpen()">
           Přidat
         </CButton>
 
@@ -14,7 +14,7 @@
   </div>
 
 
-  <CModal :visible="addItemModal" @close="() => { addItemModal = false }">
+  <CModal :visible="addItemDialogOpenModal" @close="() => { addItemDialogOpenModal = false }">
     <CModalHeader>
       <CModalTitle>Přidat položku</CModalTitle>
     </CModalHeader>
@@ -33,7 +33,7 @@
 
     </CModalBody>
     <CModalFooter>
-      <CButton color="secondary" @click="() => { addItemModal = false }">
+      <CButton color="secondary" @click="() => { addItemDialogOpenModal = false }">
         Storno
       </CButton>
       <CButton color="primary">Uložit</CButton>
@@ -45,6 +45,7 @@
 
 import { ref } from "vue";
 import PolozkyTable from "./PolozkyTable.vue";
+import { useStore } from 'vuex'
 
 export default {
   name: 'Polozky',
@@ -52,11 +53,14 @@ export default {
     PolozkyTable
   },
   setup() {
-    const addItemModal = ref(false)
-    const addItem = () => {
-      addItemModal.value = true;
+    const store = useStore();
+
+    const addItemDialogOpenModal = ref(false)
+    const addItemDialogOpen = () => {
+      addItemDialogOpenModal.value = true;
     }
-    return { addItem, addItemModal }
+    const addItem = data => store.dispatch('addItem', data);
+    return { addItemDialogOpen, addItem, addItemDialogOpenModal }
   },
 }
 </script>

@@ -43,13 +43,11 @@ const ItemBorrowing = {
 	$id: 'ItemBorrowing',
 	type: 'object',
 	properties: {
-		user: {
+		email: {
 			type: 'string',
 		},
 		item: {
-			type: 'number',
-			minimum: 0,
-			multipleOf: 1
+			type: 'string',
 		},
 		from: {
 			type: 'string',
@@ -63,7 +61,7 @@ const ItemBorrowing = {
 			type: 'string'
 		}
 	},
-	required: ['user', 'item', 'note', 'to', 'from'],
+	required: ['email', 'item', 'note', 'to', 'from'],
 	additionalProperties: false
 }
 
@@ -97,5 +95,8 @@ const UserRole = {
 }
 
 module.exports = {
-	UserRole: ajv.compile(UserRole)
+	UserRole: ajv.compile(UserRole),
+	ItemBorrowingUpdate: ajv.compile(ItemBorrowingUpdate),
+	ItemBorrowing: ajv.compile(ItemBorrowing),
+	Item: ajv.compile(Item)
 }
