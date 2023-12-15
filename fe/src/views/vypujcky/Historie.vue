@@ -6,7 +6,9 @@
           <CCardBody>
             <CRow>
               <CCol :sm="5">
-                <h4 id="traffic" class="card-title mb-0">Hisotire</h4>
+                <h4 id="traffic" class="card-title mb-0">Historie
+
+                </h4>
                 <div class="small text-body-secondary">January 2021</div>
               </CCol>
               <CCol :sm="7" class="d-none d-md-block">
@@ -17,43 +19,50 @@
             </CRow>
             <br>
             <CRow>
-              <CCol><p>ahhoj</p></CCol>
-            </CRow>
-          </CCardBody>
-          <CCardFooter>
-            <CRow>
               <CCol>
-                <div class="text-body-secondary">Test</div>
-                <div class="fw-semibold text-truncate">29.703 Users (40%)</div>
-                <CProgress class="mt-2" color="success" thin :precision="1" :value="40" />
+                <VypujckyTable :items="vypujcky" :actions="{
+                  detail: true,
+                  return: false,
+                  longer: false,
+                }"></VypujckyTable>
               </CCol>
             </CRow>
-          </CCardFooter>
-        </CCard>
-      </CCol>
-    </CRow>
-    <CRow>
-      <CCol :md="12">
-        <CCard class="mb-4">
-          <CCardHeader> Traffic &amp; Sales </CCardHeader>
-          <CCardBody>
-            Body
           </CCardBody>
         </CCard>
       </CCol>
     </CRow>
+
   </div>
 </template>
 
 <script>
-
+import { ref } from "vue";
+import VypujckyTable from "./VypujckyTable";
 export default {
-  name: 'Dashboard',
+  name: 'Historie',
   components: {
+    VypujckyTable
   },
-  setup() {
-    
+  setup(context) {
+
+    let vypujcky = ref(
+      [
+        {
+          id: "1234",
+          item_code: 'DHM-2002',
+          first_name: 'NOOOOOOO',
+          last_name: " Nopeeee",
+          email: 'mmm@asd.cz',
+          from: '3.3.2000',
+          to: '3.5.5000',
+          item_name: 'Name',
+          note: 'Poznamkskkaksk',
+          prolonged: true,
+        },
+
+      ])
     return {
+      vypujcky
     }
   },
 }
