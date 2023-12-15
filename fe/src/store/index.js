@@ -172,7 +172,7 @@ export default createStore({
     },
     async returnBorrowing(context, id) {
       try {
-        const response = await REST.GET(`lending/${id}/returned`);
+        const response = await REST.POST(`lending/${id}/returned`);
         context.commit('returnBorrowing', response);
       } catch (error) {
         context.commit('setBorrowingsError', error);
