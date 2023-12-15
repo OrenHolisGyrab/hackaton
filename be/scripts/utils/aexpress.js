@@ -53,6 +53,7 @@ class UnprocessableEntity extends ApiError {
 const FallThrough = Symbol('api-fall-through');
 
 function handle_error(err, res) {
+	console.log(err);
 	let status = 500;
 	let error = {
 		error: 'Internal error',

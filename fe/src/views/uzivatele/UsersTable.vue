@@ -8,7 +8,7 @@
           <CTableHeaderCell class="bg-body-secondary text-center"> Přijmení </CTableHeaderCell>
           <CTableHeaderCell class="bg-body-secondary text-center"> email </CTableHeaderCell>
           <CTableHeaderCell class="bg-body-secondary"> Role </CTableHeaderCell>
-          <CTableHeaderCell class="bg-body-secondary">  </CTableHeaderCell>
+          <CTableHeaderCell class="bg-body-secondary"> </CTableHeaderCell>
 
         </CTableRow>
       </CTableHead>
@@ -17,12 +17,22 @@
           <CTableDataCell class="text-center"> {{ item.first_name }} </CTableDataCell>
           <CTableDataCell>{{ item.last_name }} </CTableDataCell>
           <CTableDataCell class="text-center"> {{ item.email }} </CTableDataCell>
-          <CTableDataCell> {{ item.role }} </CTableDataCell>
+          <CTableDataCell>
+            <CDropdown color="secondary" variant="btn-group">
+              <CDropdownToggle color="primary">{{ item.role }}</CDropdownToggle>
+              <CDropdownMenu>
+                <CDropdownItem @click="setRole(item.id, 0)"  href="#">Studen</CDropdownItem>
+                <CDropdownItem @click="setRole(item.id, 1)"  href="#">Pracovník</CDropdownItem>
+                <CDropdownItem @click="setRole(item.id, 2)"  href="#">Admin</CDropdownItem>
+              </CDropdownMenu>
+            </CDropdown>
+
+
+          </CTableDataCell>
           <CTableDataCell>
 
             <CButtonGroup role="group" aria-label="Basic outlined example">
-              <CButton color="primary" variant="outline" @click="() => edit(item.id)">Upravit</CButton>
-              <CButton color="primary" variant="outline" @click="() => {disableUser(item.id, !item.active)}">
+              <CButton color="primary" variant="outline" @click="() => { disableUser(item.id, !item.active) }">
                 {{ item.active ? 'Deaktivovat' : 'Aktivovat' }}
               </CButton>
             </CButtonGroup>
@@ -36,9 +46,9 @@
 </template>
 
 <script>
-import {computed, ref} from "vue";
+import { computed, ref } from "vue";
 import { useStore } from 'vuex';
-import {Formats} from "../../utils/utils";
+import { Formats } from "../../utils/utils";
 
 export default {
   name: 'PolozkyTable',
@@ -51,11 +61,12 @@ export default {
     downloadItems();
 
     const deleteConfirm = ref(null);
+
     let edit = (id) => {
       console.log(id);
     }
 
-    const disableUser = async (id, active) => await store.dispatch('disableUser', {id, active});
+    const disableUser = async (id, active) => await store.dispatch('disableUser', { id, active });
 
     return {
       edit, deleteConfirm, disableUser,

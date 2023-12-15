@@ -22,12 +22,11 @@
 
 
       <CForm>
-        <CFormInput type="text" label="Kód položky" placeholder="Kód položky" />
-        <CFormInput type="text" label="Nazev položky" placeholder="např. Notebook, klávesnice ..." />
-        <CFormTextarea label="Popis" rows="3"></CFormTextarea>
-        <CFormInput type="text" label="Místnost" placeholder="Místnost" />
-        <CFormInput type="text" label="Datum přidání" placeholder="Datum přidání do inventáře" />
-        <CFormInput type="text" label="Výrobní číslo" placeholder="Výrobní číslo" />
+        <CFormInput v-model="addItemData.code" type="text" label="Kód položky" placeholder="Kód položky" required/>
+        <CFormInput v-model="addItemData.name" type="text" label="Nazev položky" placeholder="např. Notebook, klávesnice ..." required />
+        <CFormTextarea v-model="addItemData.description" label="Popis" rows="3"></CFormTextarea>
+        <CFormInput v-model="addItemData.room" type="text" label="Místnost" placeholder="Místnost" />
+        <CFormInput v-model="addItemData.serial_number" type="text" label="Výrobní číslo" placeholder="Výrobní číslo" />
 
       </CForm>
 
@@ -43,7 +42,7 @@
 
 <script>
 
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import PolozkyTable from "./PolozkyTable.vue";
 import { useStore } from 'vuex'
 
@@ -60,7 +59,9 @@ export default {
       addItemDialogOpenModal.value = true;
     }
     const addItem = data => store.dispatch('addItem', data);
-    return { addItemDialogOpen, addItem, addItemDialogOpenModal }
+    const addItemData = reactive({})
+
+    return { addItemDialogOpen, addItem, addItemDialogOpenModal, addItemData }
   },
 }
 </script>
