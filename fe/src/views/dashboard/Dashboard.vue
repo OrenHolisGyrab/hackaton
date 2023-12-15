@@ -42,18 +42,23 @@
         </CCard>
       </CCol>
     </CRow>
+    <qrcode-vue :value="value"></qrcode-vue>
   </div>
 </template>
 
 <script>
+import { createApp } from 'vue'
+import QrcodeVue from 'qrcode.vue'
 
 export default {
   name: 'Dashboard',
   components: {
+    QrcodeVue
   },
   setup() {
     
     return {
+      value: 'https://google.com'
     }
   },
 }
