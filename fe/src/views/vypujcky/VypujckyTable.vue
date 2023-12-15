@@ -28,7 +28,7 @@
           <CTableDataCell>
 
             <CButtonGroup role="group" aria-label="Basic outlined example">
-              <CButton v-if="item.btns.detail" color="primary" variant="outline">Detail</CButton>
+              <CButton v-if="item.btns.detail" color="primary" variant="outline" @click="() => openDetail(item.item)">Detail</CButton>
               <CButton v-if="item.btns.longer" color="primary" variant="outline" @click="() => prodlouzitModal = true">Prodloužit</CButton>
               <CButton v-if="item.btns.return" :disabled="!!item.returned" color="primary" variant="outline" @click="() => returnBorrowing(item.id)">
                 {{ item.returned ? 'Vráceno' : 'Vrátit' }}</CButton>
@@ -59,12 +59,42 @@
       </CModalFooter>
     </CForm>
   </CModal>
+
+  <CModal :visible="detailModal" @close="() => { detailModal = false }">
+    <CModalHeader>
+      <CModalTitle>Detail položky</CModalTitle>
+    </CModalHeader>
+    <div class="item-detail">
+      <div
+        v-for="item in [{
+          key: 'name',
+          text: 'Název'
+        },{
+          key: 'code',
+          text: 'Kód'
+        },{
+          key: 'description',
+          text: 'Popis'
+        },{
+          key: 'room',
+          text: 'Místnost'
+        },{
+          key: 'serial_number',
+          text: 'Sériové číslo'
+        }]"
+        :key="item.key"
+      >
+        {{ item.text }}: {{ detailModal[item.key] }}
+      </div>
+    </div>
+  </CModal>
 </template>
 
 <script>
 import { Formats } from "../../utils/utils";
 import {useStore} from "vuex";
 import {computed, ref, reactive} from "vue";
+import {REST} from "../../utils/REST";
 export default {
   name: 'Dashboard',
   components: {
@@ -79,18 +109,23 @@ export default {
 
     const returnBorrowing = id => store.dispatch('returnBorrowing', id);
 
-
-    
+    const detailModal = ref(null);
 
     const prodlouzitModal = ref(false);
     const prodlouzitData = reactive({})
     const prodlouzit = () => {
-      //todo odeslat na server 
+      //todo odeslat na server
       prodlouzitModal.value = false;
 
     }
 
+    const openDetail = async itemId => {
+      detailModal.value = await REST.GET(`items/${itemId}`);
+    }
+
     return {
+      detailModal,
+      openDetail,
       returnBorrowing,
       actions,
       items: computed(() => store.state.borrowings.list.map(i => ({
