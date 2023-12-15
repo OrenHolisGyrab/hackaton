@@ -27,22 +27,21 @@
   color: black;
   margin-left: 20px;
   font-size: x-large;
+}
+
+.google-auth:link {
   text-decoration: none;
 }
 
-.auth-span:link {
+.google-auth:visited {
   text-decoration: none;
 }
 
-.auth-span:visited {
+.google-auth:hover {
   text-decoration: none;
 }
 
-.auth-span:hover {
-  text-decoration: none;
-}
-
-.auth-span:active {
+.google-auth:active {
   text-decoration: none;
 }
 
