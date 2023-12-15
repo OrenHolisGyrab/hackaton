@@ -13,14 +13,6 @@ const db = new SQLBuilder();
 
 const tempUpload = multer({ dest: `./temp` })
 
-app.all_json('/items', async req => {
-	if (!hasAtLeastRole(req.session, 'ADMIN')) {
-		throw new Unauthorized('Your role is too low to perform this operation');
-	}
-
-	return FallThrough;
-})
-
 app.get_json('/items', async () => await db.select('items').where('deleted_at IS NULL').getList());
 app.get_json('/items/:id([0-9]+)', async req => await validateId(req.params.id, 'items'));
 
