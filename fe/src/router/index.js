@@ -11,6 +11,12 @@ const routes = [
     redirect: '/vypujcky/personal-active',
     children: [
       {
+        path: 'scan/:code?',
+        props: true,
+        name: 'scanner',
+        component: () => import('@/views/vypujcky/Scanner'),
+      },
+      {
         path: '/vypujcky',
         name: 'Vypujcky',
         component: {
@@ -94,12 +100,6 @@ const routes = [
         name: 'Page500',
         component: () => import('@/views/pages/Page500'),
       },
-      {
-        path: 'scan',
-        name: 'scanner',
-        component: () => import('@/views/scanner/vypujcky/Scanner'),
-      },
-
     ],
   },
 ]

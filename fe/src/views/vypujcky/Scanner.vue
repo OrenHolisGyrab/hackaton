@@ -1,5 +1,6 @@
 <template>
-  Ahoj
+  <CSpinner/>
+
 </template>
 
 <script>
@@ -10,9 +11,12 @@ import {useStore} from "vuex";
 
 export default {
   name: 'Scanner',
+  props: { code: { type: String } },
   setup(context) {
     const store = useStore();
-
+    console.log(
+      context.code
+    );
 
     return {
     }
