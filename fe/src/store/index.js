@@ -77,7 +77,7 @@ export default createStore({
   actions: {
     async getSession(context) {
       try {
-        const response = await REST.GET('sessions');
+        const response = await REST.GET('session');
         context.commit('setSession', response);
       } catch (error) {
         context.commit('setSessionError', error);

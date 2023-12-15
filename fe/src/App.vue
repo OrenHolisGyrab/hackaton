@@ -1,12 +1,26 @@
 <template>
-  <router-view />
+  <div v-if="!error && !session">Loading</div>
+  <Login v-if="error && !session"/>
+  <router-view v-if="!error && session"/>
 </template>
 <script>
 import { onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import { useColorModes } from '@coreui/vue'
+import Login from "./views/pages/Login";
 
 export default {
+  computed: {
+    error() {
+      return this.$store.state.error;
+    },
+    session() {
+      return this.$store.state.session;
+    }
+  },
+  components: {
+    Login,
+  },
   setup() {
     const { isColorModeSet, setColorMode } = useColorModes(
       'coreui-free-vue-admin-template-theme',
@@ -29,6 +43,8 @@ export default {
 
       setColorMode(store.state.theme)
     })
+
+    store.dispatch('getSession');
   },
 }
 </script>
