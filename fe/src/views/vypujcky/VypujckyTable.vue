@@ -11,42 +11,35 @@
           <CTableHeaderCell class="bg-body-secondary"> Nazev </CTableHeaderCell>
           <CTableHeaderCell class="bg-body-secondary"> Prodlouženo </CTableHeaderCell>
           <CTableHeaderCell class="bg-body-secondary"> Poznámka </CTableHeaderCell>
-          <CTableHeaderCell class="bg-body-secondary" v-if="actions"> Akce </CTableHeaderCell>
+          <CTableHeaderCell class="bg-body-secondary"> Akce </CTableHeaderCell>
         </CTableRow>
       </CTableHead>
       <CTableBody>
         <CTableRow v-for="item in items" :key="item.code">
-          <CTableDataCell class="text-center">
-            <CAvatar size="md" :src="item.avatar.src" :status="item.avatar.status" />
-          </CTableDataCell>
+          <CTableDataCell class="text-center"> {{ item.item_code }} </CTableDataCell>
           <CTableDataCell>
-            <div>{{ item.user.name }}</div>
-            <div class="small text-body-secondary text-nowrap">
-              <span>{{ item.user.new ? 'New' : 'Recurring' }}</span> |
-              {{ item.user.registered }}
-            </div>
+            <div>{{ item.first_name }} {{ item.last_name }} ({{ item.email }})</div>
           </CTableDataCell>
-          <CTableDataCell class="text-center">
-            <CIcon size="xl" :name="item.country.flag" :title="item.country.name" />
-          </CTableDataCell>
+          <CTableDataCell class="text-center"> {{ item.from }} </CTableDataCell>
+          <CTableDataCell> {{ item.to }} </CTableDataCell>
+          <CTableDataCell> {{ item.item_name }} </CTableDataCell>
+          <CTableDataCell> {{ item.prolonged }} </CTableDataCell>
+          <CTableDataCell> {{ item.note }} </CTableDataCell>
           <CTableDataCell>
-            <div class="d-flex justify-content-between align-items-baseline">
-              <div class="fw-semibold">{{ item.usage.value }}%</div>
-              <div class="text-nowrap text-body-secondary small ms-3">
-                {{ item.usage.period }}
-              </div>
-            </div>
-            <CProgress thin :color="item.usage.color" :value="item.usage.value" />
+
+            <CButtonGroup role="group" aria-label="Basic outlined example">
+              <CButton v-if="item.btns.detail" color="primary" variant="outline">Detail</CButton>
+              <CButton v-if="item.btns.longer" color="primary" variant="outline">Prodloužit</CButton>
+              <CButton v-if="item.btns.return" color="primary" variant="outline">Vrátit</CButton>
+            </CButtonGroup>
+            
           </CTableDataCell>
-          <CTableDataCell class="text-center">
-            <CIcon size="xl" :name="item.payment.icon" />
-          </CTableDataCell>
-          <CTableDataCell>
+
+          <!-- <CTableDataCell>
             <div class="small text-body-secondary">Last login</div>
             <div class="fw-semibold text-nowrap">
-              {{ item.activity }}
             </div>
-          </CTableDataCell>
+          </CTableDataCell> -->
         </CTableRow>
       </CTableBody>
     </CTable>
@@ -56,15 +49,16 @@
 
 <script>
 import { ref } from "vue";
+import { Formats } from "../../utils/utils";
 export default {
   name: 'Dashboard',
   components: {
   },
   setup() {
     //kód, clovek,od,do, nazev polozky, poznámka, prodlouženo, tkacitka: detail, vrátit, prodlouzit 
-    
 
-    //first_name, last_name, email, i.name, i.code
+
+    let actions = true;
 
     let items =
       [
@@ -85,11 +79,14 @@ export default {
         ...i,
         from: Formats.date((new Date(i.from)).getTime() / 1000),
         to: Formats.date((new Date(i.to)).getTime() / 1000),
-        prolonged: prolonged ? "Ano" : "Ne",
+        prolonged: i.prolonged ? "Ano" : "Ne",
         //buttons enabled
-        detail: true,
-        return: true,
-        longer: true,
+        btns: {
+          detail: true,
+          return: actions,
+          longer: actions,
+          prolong: true
+        }
       }))
 
 
