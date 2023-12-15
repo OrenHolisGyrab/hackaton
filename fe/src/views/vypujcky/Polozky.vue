@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CTable :columns="data.columns" :items="data.items" hower striped />
+    <CTable :columns="data.columns" :items="items" hower striped />
 
   </div>
 </template>
@@ -9,12 +9,23 @@
 
 import {Formats} from "../../utils/utils";
 import { ref } from "vue";
+import { useStore } from 'vuex'
 
 export default {
   name: 'Dashboard',
+  computed: {
+    items () {
+      return this.$store.state.items.items.map(i => ({
+        ...i,
+        added: Formats.date((new Date(i.added)).getTime() / 1000)
+      }));
+    }
+  },
   components: {
   },
   setup() {
+    const store = useStore();
+
     let data = ref(
       {
         columns: [
@@ -49,24 +60,13 @@ export default {
             _props: { scope: 'col' },
           }
         ],
-        items: [
-          {
-            code: 'DHM-2002',
-            room: '111',
-            added: '2011-10-05T14:48:00.000Z',
-            name: 'Name',
-            description: 'yes',
-            serial_number: 'yes',
-          },
-        ].map(i => ({
-          ...i,
-          added: Formats.date((new Date(i.added)).getTime() / 1000)
-        }))
       }
-    )
-    return {
-      data
-    }
+    );
+
+    const downloadItems = async () => await store.dispatch('getItems');
+    downloadItems();
+
+    return {data}
   },
 }
 </script>
