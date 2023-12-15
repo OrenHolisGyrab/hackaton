@@ -4,6 +4,7 @@ const {FallThrough} = require("./utils/aexpress.js");
 const {hasAtLeastRole, validateAjvScheme, validateId, validateValidDate} = require("./utils/validations");
 const {Unauthorized, Conflict, NotFound, BadRequest} = require("./utils/aexpress");
 const {ItemBorrowing, ItemBorrowingUpdate} = require("./schemas");
+const {parseId} = require("./utils/utils");
 
 const app = express();
 const db = new SQLBuilder();
@@ -51,6 +52,10 @@ async function validateItemIsNotBorrowed(id) {
 app.get_json('/lending/all', async req => await lendingListQuery().getList());
 app.get_json('/lending/active', async req => await lendingListQuery().where('returned IS NULL').getList());
 app.get_json('/lending/historic', async req => await lendingListQuery().where('returned IS NOT NULL').getList());
+app.get_json('/lending/item/:id([0-9]+)/borrowed', async req => {
+	const id = parseId(req.params.id);
+	return !!(await db.select('item_borrowings').where('item = ?', id).oneOrNone());
+});
 
 app.post_json('/lending', async req => {
 	const data = req.body;
