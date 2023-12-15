@@ -40,29 +40,5 @@ export default [
     name: 'Opravneni',
     to: '/uzivatele/opravneni',
     icon: 'cil-apps',
-  },
-  
-  {
-    component: 'CNavTitle',
-    name: 'Test',
-  },
-  {
-    component: 'CNavItem',
-    name: 'Login',
-    to: '/login',
-    icon: 'cil-apps',
-  },
-  
-  // {
-    //   component: 'CNavItem',
-    //   name: 'Error 404',
-    //   to: '/404',
-    // },
-    // {
-      //   component: 'CNavItem',
-      //   name: 'Error 500',
-      //   to: '/500',
-      // },
-      
-    ]
-    
+  }
+]
