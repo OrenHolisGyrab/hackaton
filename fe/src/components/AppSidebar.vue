@@ -15,11 +15,12 @@
   >
     <CSidebarHeader class="border-bottom">
       <CSidebarBrand>
-        <CIcon
+        <img src="../../public/naseLogo.png" height="80px">
+        <!-- <CIcon
           custom-class-name="sidebar-brand-full"
           :icon="logo"
           :height="32"
-        />
+        /> -->
         <CIcon
           custom-class-name="sidebar-brand-narrow"
           :icon="sygnet"
